@@ -9,10 +9,10 @@ import logging
 import logging.handlers
 from pathlib import Path
 
-from autoreduce_utils.project.structure import PROJECT_ROOT
+from autoreduce_utils.settings import CONFIG_ROOT
 
 LOGGING_LEVEL = logging.WARNING
-logging_dir = Path(PROJECT_ROOT, 'logs')
+logging_dir = Path(CONFIG_ROOT, 'logs')
 logging_dir.mkdir(parents=True, exist_ok=True)
 LOGGING_LOC = logging_dir / 'isisicat_prefix_mappings.log'
 

@@ -7,8 +7,6 @@ for more details
 """
 from setuptools import setup, find_packages
 
-from build.commands.help import Help
-
 setup(name='autoreduce_utils',
       version='1.0.0',
       description='ISIS Autoreduce ',
@@ -18,6 +16,7 @@ setup(name='autoreduce_utils',
           'Django==3.2',
           'gitpython==3.1.14',
           'python-icat==0.18.1',
+          'suds-py3==1.4.4.1',
           'stomp.py==6.1.0',
       ],
       packages=find_packages(),

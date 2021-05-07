@@ -13,7 +13,7 @@ import socket
 from unittest import TestCase, mock
 from unittest.mock import patch, MagicMock
 
-from model.message.message import Message
+from autoreduce_utils.message.message import Message
 from autoreduce_utils.clients.connection_exception import ConnectionException
 from autoreduce_utils.clients.queue_client import QueueClient
 from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory

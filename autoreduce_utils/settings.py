@@ -10,11 +10,14 @@ Settings for connecting to the test services that run locally
 """
 import configparser
 import os
+from pathlib import Path
 
 from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
 
+CONFIG_ROOT = str(Path("~/.autoreduce").expanduser())
+INI_FILE = os.environ.get("AUTOREDUCTION_CREDENTIALS", os.path.expanduser(f"{CONFIG_ROOT}/credentials.ini"))
+
 CONFIG = configparser.ConfigParser()
-INI_FILE = os.environ.get("AUTOREDUCTION_CREDENTIALS", os.path.expanduser("~/.autoreduce/credentials.ini"))
 CONFIG.read(INI_FILE)
 
 

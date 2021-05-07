@@ -15,7 +15,7 @@ import socket
 import stomp
 from stomp.exception import ConnectFailedException
 
-from model.message.message import Message
+from autoreduce_utils.message.message import Message
 from autoreduce_utils.clients.abstract_client import AbstractClient
 from autoreduce_utils.clients.connection_exception import ConnectionException
 from autoreduce_utils.settings import ACTIVEMQ_SETTINGS
