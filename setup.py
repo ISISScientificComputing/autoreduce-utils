@@ -20,9 +20,6 @@ setup(name='autoreduce_utils',
           'python-icat==0.18.1',
           'stomp.py==6.1.0',
       ],
-      cmdclass={
-          'help': Help,
-      },
       packages=find_packages(),
       package_data={"autoreduce_utils": ["test_credentials.ini"]},
       entry_points={"console_scripts": ["autoreduce-creds-migrate = autoreduce_utils.migrate_settings:main"]})
