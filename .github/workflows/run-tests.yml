@@ -1,0 +1,70 @@
+name: Tests
+on: [ push ]
+
+jobs:
+  pytest:
+    name: Pytest
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - uses: ./.github/actions/build-autoreduction
+
+      - name: Run unit tests
+        run: >-
+          pytest --cov=autoreduce_utils --cov-report=xml
+
+      - uses: codecov/codecov-action@v1
+        with:
+          files: ./coverage.xml
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+
+  Inspection:
+    name: Code Inspection
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - uses: ./.github/actions/build-autoreduction
+
+      - name: Pylint tests
+        run: |
+          pylint autoreduce_utils
+
+      - name: YAPF
+        run: python -m yapf --parallel --diff --recursive .
+
+      - name: Vulture
+        run: vulture --min-confidence 100 autoreduce_utils
