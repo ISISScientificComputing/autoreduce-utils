@@ -9,8 +9,8 @@ Test AbstractClient functionality
 """
 import unittest
 
-from utils.clients.abstract_client import AbstractClient
-from utils.clients.settings.client_settings import ClientSettings
+from autoreduce_utils.clients.abstract_client import AbstractClient
+from autoreduce_utils.clients.settings.client_settings import ClientSettings
 
 
 # pylint:disable=missing-docstring

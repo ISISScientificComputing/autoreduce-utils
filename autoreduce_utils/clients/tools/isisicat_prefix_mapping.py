@@ -7,8 +7,8 @@
 """
 get_icat_instrument_prefix() can be used to map Autoreduction to ICAT instrument prefixes
 """
-from utils.clients.icat_client import ICATClient
-from utils.clients.tools.isisicat_prefix_mapping_logging_setup import logger
+from autoreduce_utils.clients.icat_client import ICATClient
+from autoreduce_utils.clients.tools.isisicat_prefix_mapping_logging_setup import logger
 
 
 def get_icat_instrument_prefix(instrument_fullname: str) -> str:

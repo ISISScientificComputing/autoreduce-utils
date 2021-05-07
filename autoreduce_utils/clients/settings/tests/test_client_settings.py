@@ -9,7 +9,7 @@ Test the ClientSettings package
 """
 from unittest import TestCase, mock
 
-from utils.clients.settings.client_settings import ClientSettings
+from autoreduce_utils.clients.settings.client_settings import ClientSettings
 
 
 # pylint:disable=missing-docstring

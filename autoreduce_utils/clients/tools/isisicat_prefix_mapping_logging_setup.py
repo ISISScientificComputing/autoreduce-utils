@@ -5,13 +5,16 @@
 # SPDX - License - Identifier: GPL-3.0-or-later
 # ############################################################################### #
 # pylint: skip-file
+import logging
 import logging.handlers
-import os
+from pathlib import Path
 
-from utils.project.structure import get_project_root
+from autoreduce_utils.project.structure import PROJECT_ROOT
 
 LOGGING_LEVEL = logging.WARNING
-LOGGING_LOC = os.path.join(get_project_root(), 'logs', 'isisicat_prefix_mappings.log')
+logging_dir = Path(PROJECT_ROOT, 'logs')
+logging_dir.mkdir(parents=True, exist_ok=True)
+LOGGING_LOC = logging_dir / 'isisicat_prefix_mappings.log'
 
 logger = logging.getLogger('IsisICATPrefixMappings')
 logger.setLevel(LOGGING_LEVEL)

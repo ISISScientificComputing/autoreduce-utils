@@ -16,9 +16,9 @@ import stomp
 from stomp.exception import ConnectFailedException
 
 from model.message.message import Message
-from utils.clients.abstract_client import AbstractClient
-from utils.clients.connection_exception import ConnectionException
-from utils.settings import ACTIVEMQ_SETTINGS
+from autoreduce_utils.clients.abstract_client import AbstractClient
+from autoreduce_utils.clients.connection_exception import ConnectionException
+from autoreduce_utils.settings import ACTIVEMQ_SETTINGS
 
 
 class QueueClient(AbstractClient):

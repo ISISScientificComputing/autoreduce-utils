@@ -14,10 +14,10 @@ from unittest import TestCase, mock
 from unittest.mock import patch, MagicMock
 
 from model.message.message import Message
-from utils.clients.connection_exception import ConnectionException
-from utils.clients.queue_client import QueueClient
-from utils.clients.settings.client_settings_factory import ClientSettingsFactory
-from utils.settings import ACTIVEMQ_SETTINGS
+from autoreduce_utils.clients.connection_exception import ConnectionException
+from autoreduce_utils.clients.queue_client import QueueClient
+from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
+from autoreduce_utils.settings import ACTIVEMQ_SETTINGS
 
 
 # pylint:disable=protected-access,no-self-use

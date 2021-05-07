@@ -8,7 +8,7 @@
 Factory for creating settings objects that can be used in the client classes
 """
 # pylint: disable=fixme
-from utils.clients.settings.client_settings import ClientSettings
+from autoreduce_utils.clients.settings.client_settings import ClientSettings
 
 
 class ClientSettingsFactory:

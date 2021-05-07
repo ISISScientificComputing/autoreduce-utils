@@ -10,7 +10,7 @@ Test ICAT prefix mapping
 import unittest
 from unittest.mock import patch
 
-from utils.clients.tools.isisicat_prefix_mapping import get_icat_instrument_prefix
+from autoreduce_utils.clients.tools.isisicat_prefix_mapping import get_icat_instrument_prefix
 
 
 # pylint:disable=no-self-use
@@ -31,7 +31,7 @@ class TestICATPrefixMapping(unittest.TestCase):
     DIR = "utils.clients.tools.isisicat_prefix_mapping"
 
     @patch('icat.Client.__init__', return_value=None)
-    @patch('utils.clients.icat_client.ICATClient.execute_query',
+    @patch('autoreduce_utils.clients.icat_client.ICATClient.execute_query',
            return_value=[MockInstrumentQueryResult("ENG", "ENGINX")])
     def test_get_icat_instrument_prefix_executes_icat_query(self, mock_execute_query, _):
         """
@@ -42,7 +42,7 @@ class TestICATPrefixMapping(unittest.TestCase):
         mock_execute_query.assert_called_once()
 
     @patch('icat.Client.__init__', return_value=None)
-    @patch('utils.clients.icat_client.ICATClient.execute_query', side_effect=Exception)
+    @patch('autoreduce_utils.clients.icat_client.ICATClient.execute_query', side_effect=Exception)
     def test_get_icat_instrument_prefix_icat_query_raises(self, mock_execute_query, _):
         """
         Test: If the query raises due to a connection issue or wrong credentials
@@ -53,7 +53,7 @@ class TestICATPrefixMapping(unittest.TestCase):
 
     @patch('icat.Client.__init__', return_value=None)
     @patch('logging.Logger.warning')
-    @patch('utils.clients.icat_client.ICATClient.execute_query',
+    @patch('autoreduce_utils.clients.icat_client.ICATClient.execute_query',
            return_value=[MockInstrumentQueryResult("ENG", "ENGINX")])
     def test_get_icat_instrument_prefix_log_invalid_instrument(self, _mock_execute_query, mock_logger_warning, _):
         """

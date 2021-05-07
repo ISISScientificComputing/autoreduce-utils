@@ -15,9 +15,9 @@ from unittest.mock import patch
 
 import icat
 
-from utils.clients.icat_client import ICATClient
-from utils.clients.settings.client_settings_factory import ClientSettingsFactory
-from utils.clients.connection_exception import ConnectionException
+from autoreduce_utils.clients.icat_client import ICATClient
+from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
+from autoreduce_utils.clients.connection_exception import ConnectionException
 
 
 def raise_icat_session_error():
@@ -121,7 +121,7 @@ class TestICATClient(unittest.TestCase):
 
     @patch('icat.Client.__init__', return_value=None)
     @patch('icat.Client.__setattr__')
-    @patch('utils.clients.icat_client.ICATClient.connect')
+    @patch('autoreduce_utils.clients.icat_client.ICATClient.connect')
     @patch('icat.Client.refresh')
     @patch('icat.Client.search')
     def test_query_without_conn(self, mock_search, mock_refresh, mock_connect, mock_set_attr, _):
