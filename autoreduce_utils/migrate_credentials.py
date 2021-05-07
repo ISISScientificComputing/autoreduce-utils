@@ -15,14 +15,17 @@ from pathlib import Path
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 
-def migrate_settings(destination_path: str):
+def migrate_credentials(destination_path: str):
+    """
+    Migrate the credentials.ini
+    """
     utils_path = os.path.join(ROOT_DIR, 'autoreduce_utils')
     logging.info("================== Migrate credentials ====================")
     test_credentials_path = os.path.join(utils_path, 'test_credentials.ini')
     cred_dir = Path(destination_path).expanduser()
     cred_dir.mkdir(parents=True, exist_ok=True)
     credentials_path = cred_dir / "credentials.ini"
-    logging.info(f"Copying credentials to {credentials_path}")
+    logging.info("Copying credentials to %s", credentials_path)
     try:
         copyfile(test_credentials_path, credentials_path)
     except OSError as error:
@@ -33,5 +36,8 @@ def migrate_settings(destination_path: str):
 
 
 def main():
+    """
+    Entrypoint for the migrate credentials action
+    """
     destination_path = "~/.autoreduce/"
-    migrate_settings(destination_path)
+    migrate_credentials(destination_path)
