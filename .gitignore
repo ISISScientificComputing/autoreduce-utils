@@ -3,6 +3,7 @@
 */target/**
 .pytest_cache/
 
+*.egg-info
 
 # Ignore complied python
 *.pyc
