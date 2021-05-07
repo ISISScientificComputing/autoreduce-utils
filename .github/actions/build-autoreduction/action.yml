@@ -18,3 +18,11 @@ runs:
     - name: Configure credentials
       run: autoreduce-creds-migrate
       shell: bash
+
+    - name: Pull ActiveMQ
+      run: docker pull rmohr/activemq
+      shell: bash
+
+    - name: Start ActiveMQ
+      run: docker run --name activemq -p 61613:61613 -p 8161:8161 -d rmohr/activemq
+      shell: bash
