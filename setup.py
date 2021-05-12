@@ -14,12 +14,11 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='autoreduce_utils',
-      version='0.1.1',
+      version='0.1.2',
       description='ISIS Autoreduce',
       author='ISIS Autoreduction Team',
       url='https://github.com/ISISScientificComputing/autoreduce-utils/',
       install_requires=[
-          'Django==3.2.2',
           'gitpython==3.1.14',
           'python-icat==0.18.1',
           'suds-py3==1.4.4.1',
