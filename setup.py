@@ -19,6 +19,7 @@ setup(name='autoreduce_utils',
       author='ISIS Autoreduction Team',
       url='https://github.com/ISISScientificComputing/autoreduce-utils/',
       install_requires=[
+          'attrs==21.2.0',
           'gitpython==3.1.14',
           'python-icat==0.18.1',
           'suds-py3==1.4.4.1',
