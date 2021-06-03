@@ -38,6 +38,29 @@ jobs:
           fail_ci_if_error: true
           verbose: true
 
+  dependency-check:
+    name: Dependency-Check
+    runs-on: ubuntu-18.04
+    container: autoreduction/base
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ job.container.image }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ job.container.image }}-pip-
+
+      - uses: ISISScientificComputing/autoreduce-actions/build@cond
+        with:
+          package_name: autoreduce_db
+          run_activemq: false
+          migrate_creds: false
+
   Inspection:
     name: Code Inspection
     runs-on: ubuntu-18.04
