@@ -94,7 +94,7 @@ jobs:
         run: |
           pylint autoreduce_utils
 
-      - uses: ISISScientificComputing/autoreduce-actions/code_inspection@master
+      - uses: ISISScientificComputing/autoreduce-actions/code_inspection@cond
         with:
           package_name: autoreduce_utils
           pylint: false
