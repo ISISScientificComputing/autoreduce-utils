@@ -23,7 +23,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - uses: ./.github/actions/build-autoreduction
+      - uses: ISISScientificComputing/autoreduce-actions/build@master
+        with:
+          package_name: autoreduce_utils
+          migrate_db: false
 
       - name: Run unit tests
         run: >-
@@ -35,6 +38,30 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
           verbose: true
+
+  dependency-check:
+    name: Dependency-Check
+    runs-on: ubuntu-18.04
+    container: autoreduction/base
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ job.container.image }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ job.container.image }}-pip-
+
+      - name: Pip install
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+
 
   Inspection:
     name: Code Inspection
@@ -57,14 +84,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - uses: ./.github/actions/build-autoreduction
+      - uses: ISISScientificComputing/autoreduce-actions/build@master
+        with:
+          package_name: autoreduce_utils
+          migrate_db: false
 
       - name: Pylint tests
         run: |
           pylint autoreduce_utils
 
-      - name: YAPF
-        run: python -m yapf --parallel --diff --recursive .
-
-      - name: Vulture
-        run: vulture --min-confidence 100 autoreduce_utils
+      - uses: ISISScientificComputing/autoreduce-actions/code_inspection@master
+        with:
+          package_name: autoreduce_utils
+          pylint: false
