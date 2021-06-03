@@ -23,7 +23,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - uses: ISISScientificComputing/autoreduce-actions/build@cond
+      - uses: ISISScientificComputing/autoreduce-actions/build@master
         with:
           package_name: autoreduce_utils
           migrate_db: false
@@ -84,7 +84,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - uses: ISISScientificComputing/autoreduce-actions/build@cond
+      - uses: ISISScientificComputing/autoreduce-actions/build@master
         with:
           package_name: autoreduce_utils
           migrate_db: false
@@ -93,7 +93,7 @@ jobs:
         run: |
           pylint autoreduce_utils
 
-      - uses: ISISScientificComputing/autoreduce-actions/code_inspection@cond
+      - uses: ISISScientificComputing/autoreduce-actions/code_inspection@master
         with:
           package_name: autoreduce_utils
           pylint: false
