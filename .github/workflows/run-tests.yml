@@ -23,7 +23,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - uses: ./.github/actions/build-autoreduction
+      - uses: ISISScientificComputing/autoreduce-actions/build@cond
+        with:
+          package_name: autoreduce_utils
 
       - name: Run unit tests
         run: >-
@@ -57,14 +59,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - uses: ./.github/actions/build-autoreduction
+      - uses: ISISScientificComputing/autoreduce-actions/build@cond
+        with:
+          package_name: autoreduce_utils
 
-      - name: Pylint tests
-        run: |
-          pylint autoreduce_utils
-
-      - name: YAPF
-        run: python -m yapf --parallel --diff --recursive .
-
-      - name: Vulture
-        run: vulture --min-confidence 100 autoreduce_utils
+      - uses: ISISScientificComputing/autoreduce-actions/code_inspection@master
+        with:
+          package_name: autoreduce_utils
