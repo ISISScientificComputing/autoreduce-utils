@@ -56,12 +56,11 @@ jobs:
           restore-keys: |
             ${{ job.container.image }}-pip-
 
-      - uses: ISISScientificComputing/autoreduce-actions/build@cond
-        with:
-          package_name: autoreduce_utils
-          run_activemq: false
-          migrate_creds: false
-          migrate_db: false
+      - name: Pip install
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
 
 
   Inspection:
