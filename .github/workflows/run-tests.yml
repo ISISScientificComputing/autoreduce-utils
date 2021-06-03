@@ -26,6 +26,8 @@ jobs:
       - uses: ISISScientificComputing/autoreduce-actions/build@cond
         with:
           package_name: autoreduce_utils
+          with:
+            migrate_db: false
 
       - name: Run unit tests
         run: >-
@@ -57,7 +59,7 @@ jobs:
 
       - uses: ISISScientificComputing/autoreduce-actions/build@cond
         with:
-          package_name: autoreduce_db
+          package_name: autoreduce_utils
           run_activemq: false
           migrate_creds: false
 
@@ -85,6 +87,8 @@ jobs:
       - uses: ISISScientificComputing/autoreduce-actions/build@cond
         with:
           package_name: autoreduce_utils
+          with:
+            migrate_db: false
 
       - uses: ISISScientificComputing/autoreduce-actions/code_inspection@master
         with:
