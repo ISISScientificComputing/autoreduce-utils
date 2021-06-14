@@ -10,7 +10,9 @@ Settings for connecting to the test services that run locally
 """
 import configparser
 import os
-from pathlib import Path
+import logging
+import logging.handlers
+import sys
 
 from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
 
@@ -18,10 +20,22 @@ FACILITY = 'ISIS'
 
 AUTOREDUCE_HOME_ROOT = os.environ.get("AUTOREDUCTION_USERDIR", os.path.expanduser("~/.autoreduce"))
 
+############################################## Logging #############################################
 os.makedirs(os.path.join(AUTOREDUCE_HOME_ROOT, "logs"), exist_ok=True)
 
 LOG_LEVEL = os.environ.get("LOGLEVEL", "INFO").upper()
 LOG_FILE = os.path.join(AUTOREDUCE_HOME_ROOT, 'logs', 'autoreduce.log')
+
+rotating_file_handler = logging.handlers.RotatingFileHandler(filename=LOG_FILE, maxBytes=209715200, backupCount=5)
+stream_handler = logging.StreamHandler(sys.stdout)
+
+logging.basicConfig(format="[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+                    datefmt="%d/%b/%Y %H:%M:%S",
+                    level=LOG_LEVEL,
+                    handlers=[rotating_file_handler, stream_handler])
+
+logging.getLogger('stomp.py').setLevel("ERROR")
+####################################################################################################
 
 CREDENTIALS_INI_FILE = os.environ.get("AUTOREDUCTION_CREDENTIALS",
                                       os.path.expanduser(f"{AUTOREDUCE_HOME_ROOT}/credentials.ini"))

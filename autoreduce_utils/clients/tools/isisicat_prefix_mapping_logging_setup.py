@@ -12,7 +12,7 @@ from autoreduce_utils.settings import LOG_FILE, LOG_LEVEL
 
 LOGGING_LOC = LOG_FILE
 
-logger = logging.getLogger('IsisICATPrefixMappings')
+logger = logging.getLogger(__package__)
 logger.setLevel(LOG_LEVEL)
 handler = logging.handlers.RotatingFileHandler(LOGGING_LOC, maxBytes=104857600, backupCount=20)
 handler.setLevel(LOG_LEVEL)
