@@ -20,7 +20,7 @@ FACILITY = 'ISIS'
 
 AUTOREDUCE_HOME_ROOT = os.environ.get("AUTOREDUCTION_USERDIR", os.path.expanduser("~/.autoreduce"))
 
-############################################## Logging #############################################
+############################################## Logging ##############################################
 os.makedirs(os.path.join(AUTOREDUCE_HOME_ROOT, "logs"), exist_ok=True)
 
 LOG_LEVEL = os.environ.get("LOGLEVEL", "INFO").upper()
@@ -35,7 +35,7 @@ logging.basicConfig(format="[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(
                     handlers=[rotating_file_handler, stream_handler])
 
 logging.getLogger('stomp.py').setLevel("ERROR")
-####################################################################################################
+#####################################################################################################
 
 CREDENTIALS_INI_FILE = os.environ.get("AUTOREDUCTION_CREDENTIALS",
                                       os.path.expanduser(f"{AUTOREDUCE_HOME_ROOT}/credentials.ini"))
