@@ -44,11 +44,13 @@ os.makedirs(PROJECT_DEV_ROOT, exist_ok=True)
 # sa the reduction is running. By default the output is also saved locally
 # unless AUTOREDUCTION_PRODUCTION is specified
 CEPH_DIRECTORY = f"{PROJECT_DEV_ROOT}/reduced-data/%s/RB%s/autoreduced/%s/"
+MANTID_PATH = "/tmp/Mantid/lib"
 
 if "AUTOREDUCTION_PRODUCTION" in os.environ:
     # for when deploying on production - this is the real path where the mounts are
     ARCHIVE_ROOT = "\\\\isis\\inst$\\" if os.name == "nt" else "/isis"
     CEPH_DIRECTORY = "/instrument/%s/RBNumber/RB%s/autoreduced/%s"
+    MANTID_PATH = "/opt/Mantid/lib"
 elif "RUNNING_VIA_PYTEST" in os.environ:
     # For testing which uses a local folder to simulate an archive. It's nice for this
     # to be different than the development one, otherwise running the tests will delete
@@ -57,8 +59,6 @@ elif "RUNNING_VIA_PYTEST" in os.environ:
 else:
     # the default development path
     ARCHIVE_ROOT = os.path.join(PROJECT_DEV_ROOT, 'data-archive')
-
-MANTID_PATH = "/opt/Mantid/lib"
 
 # The path is structured as follows. The %s fill out the instrument name and the cycle number
 CYCLE_DIRECTORY = os.path.join(ARCHIVE_ROOT, 'NDX%s', 'Instrument', 'data', 'cycle_%s')
