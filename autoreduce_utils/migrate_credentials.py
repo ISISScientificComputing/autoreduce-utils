@@ -13,7 +13,9 @@ import logging
 from shutil import copyfile
 from pathlib import Path
 
-logger = logging.getLogger("autoreduce_utils")
+from autoreduce_utils.settings import AUTOREDUCE_HOME_ROOT
+
+logger = logging.getLogger(__package__)
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
@@ -39,8 +41,7 @@ def main():
     """
     Entrypoint for the migrate credentials action
     """
-    destination_path = "~/.autoreduce/"
-    migrate_credentials(destination_path)
+    migrate_credentials(AUTOREDUCE_HOME_ROOT)
 
 
 if __name__ == "__main__":

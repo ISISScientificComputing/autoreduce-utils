@@ -7,19 +7,15 @@
 # pylint: skip-file
 import logging
 import logging.handlers
-from pathlib import Path
 
-from autoreduce_utils.settings import CONFIG_ROOT
+from autoreduce_utils.settings import LOG_FILE, LOG_LEVEL
 
-LOGGING_LEVEL = logging.WARNING
-logging_dir = Path(CONFIG_ROOT, 'logs')
-logging_dir.mkdir(parents=True, exist_ok=True)
-LOGGING_LOC = logging_dir / 'isisicat_prefix_mappings.log'
+LOGGING_LOC = LOG_FILE
 
-logger = logging.getLogger('IsisICATPrefixMappings')
-logger.setLevel(LOGGING_LEVEL)
+logger = logging.getLogger(__package__)
+logger.setLevel(LOG_LEVEL)
 handler = logging.handlers.RotatingFileHandler(LOGGING_LOC, maxBytes=104857600, backupCount=20)
-handler.setLevel(LOGGING_LEVEL)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setLevel(LOG_LEVEL)
+formatter = logging.Formatter('[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)

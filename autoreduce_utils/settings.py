@@ -8,64 +8,61 @@
 """
 Settings for connecting to the test services that run locally
 """
-import configparser
 import os
-from pathlib import Path
+import logging
+import logging.handlers
+import sys
 
-from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
+FACILITY = 'ISIS'
 
-CONFIG_ROOT = str(Path("~/.autoreduce").expanduser())
-INI_FILE = os.environ.get("AUTOREDUCTION_CREDENTIALS", os.path.expanduser(f"{CONFIG_ROOT}/credentials.ini"))
+AUTOREDUCE_HOME_ROOT = os.environ.get("AUTOREDUCTION_USERDIR", os.path.expanduser("~/.autoreduce"))
 
-CONFIG = configparser.ConfigParser()
-CONFIG.read(INI_FILE)
+############################################## Logging ##############################################
+os.makedirs(os.path.join(AUTOREDUCE_HOME_ROOT, "logs"), exist_ok=True)
 
+LOG_LEVEL = os.environ.get("LOGLEVEL", "INFO").upper()
+LOG_FILE = os.path.join(AUTOREDUCE_HOME_ROOT, 'logs', 'autoreduce.log')
 
-def get_setting(section: str, key: str) -> str:
-    """
-    Gets the value of the key from the section.
-    """
-    return str(CONFIG.get(section, key, raw=True))  # raw=True to allow strings with special characters to be passed
+rotating_file_handler = logging.handlers.RotatingFileHandler(filename=LOG_FILE, maxBytes=209715200, backupCount=5)
+stream_handler = logging.StreamHandler(sys.stdout)
 
+logging.basicConfig(format="[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+                    datefmt="%d/%b/%Y %H:%M:%S",
+                    level=LOG_LEVEL,
+                    handlers=[rotating_file_handler, stream_handler])
 
-SETTINGS_FACTORY = ClientSettingsFactory()
+logging.getLogger('stomp.py').setLevel("ERROR")
+#####################################################################################################
 
-ICAT_SETTINGS = SETTINGS_FACTORY.create('icat',
-                                        username=get_setting('ICAT', 'user'),
-                                        password=get_setting('ICAT', 'password'),
-                                        host=get_setting('ICAT', 'host'),
-                                        port='',
-                                        authentication_type=get_setting('ICAT', 'auth'))
+CREDENTIALS_INI_FILE = os.environ.get("AUTOREDUCTION_CREDENTIALS",
+                                      os.path.expanduser(f"{AUTOREDUCE_HOME_ROOT}/credentials.ini"))
 
-MYSQL_SETTINGS = SETTINGS_FACTORY.create('database',
-                                         username=get_setting('DATABASE', 'user'),
-                                         password=get_setting('DATABASE', 'password'),
-                                         host=get_setting('DATABASE', 'host'),
-                                         port=get_setting('DATABASE', 'port'),
-                                         database_name=get_setting('DATABASE', 'name'))
+PROJECT_DEV_ROOT = os.path.join(AUTOREDUCE_HOME_ROOT, "dev")
+os.makedirs(PROJECT_DEV_ROOT, exist_ok=True)
 
-ACTIVEMQ_SETTINGS = SETTINGS_FACTORY.create('queue',
-                                            username=get_setting('QUEUE', 'user'),
-                                            password=get_setting('QUEUE', 'password'),
-                                            host=get_setting('QUEUE', 'host'),
-                                            port=get_setting('QUEUE', 'port'))
+# The reduction outputs are copied here on completion. They are saved in /tmp/<randomdir>
+# sa the reduction is running. By default the output is also saved locally
+# unless AUTOREDUCTION_PRODUCTION is specified
+CEPH_DIRECTORY = f"{PROJECT_DEV_ROOT}/reduced-data/%s/RB%s/autoreduced/%s/"
 
-LOCAL_MYSQL_SETTINGS = SETTINGS_FACTORY.create('database',
-                                               username=get_setting('DATABASE', 'user'),
-                                               password=get_setting('DATABASE', 'password'),
-                                               host=get_setting('DATABASE', 'host'),
-                                               port=get_setting('DATABASE', 'port'))
+if "AUTOREDUCTION_PRODUCTION" in os.environ:
+    # for when deploying on production - this is the real path where the mounts are
+    ARCHIVE_ROOT = "\\\\isis\\inst$\\" if os.name == "nt" else "/isis"
+    CEPH_DIRECTORY = "/instrument/%s/RBNumber/RB%s/autoreduced/%s"
+elif "RUNNING_VIA_PYTEST" in os.environ:
+    # For testing which uses a local folder to simulate an archive. It's nice for this
+    # to be different than the development one, otherwise running the tests will delete
+    # any manual changes you've done to the archive folder, e.g. for testing reduction scripts
+    ARCHIVE_ROOT = os.path.join(PROJECT_DEV_ROOT, 'test-archive')
+else:
+    # the default development path
+    ARCHIVE_ROOT = os.path.join(PROJECT_DEV_ROOT, 'data-archive')
 
-SFTP_SETTINGS = SETTINGS_FACTORY.create('sftp',
-                                        username=get_setting('SFTP', 'user'),
-                                        password=get_setting('SFTP', 'password'),
-                                        host=get_setting('SFTP', 'host'),
-                                        port=get_setting('SFTP', 'port'))
+MANTID_PATH = "/opt/Mantid/lib"
 
-CYCLE_SETTINGS = SETTINGS_FACTORY.create('cycle',
-                                         username=get_setting('CYCLE', 'user'),
-                                         password=get_setting('CYCLE', 'password'),
-                                         host='',
-                                         port='',
-                                         uows_url=get_setting('CYCLE', 'uows_url'),
-                                         scheduler_url=get_setting('CYCLE', 'scheduler_url'))
+# The path is structured as follows. The %s fill out the instrument name and the cycle number
+CYCLE_DIRECTORY = os.path.join(ARCHIVE_ROOT, 'NDX%s', 'Instrument', 'data', 'cycle_%s')
+SCRIPTS_DIRECTORY = os.path.join(ARCHIVE_ROOT, "NDX%s", "user", "scripts", "autoreduction")
+
+SCRIPT_TIMEOUT = 3600  # The max time to wait for a user script to finish running (seconds)
+TEMP_ROOT_DIRECTORY = "/autoreducetmp"

@@ -16,7 +16,7 @@ To create a `ClientSettings` class using the factory:
 ```
 from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
 
-ICAT_SETTINGS = SETTINGS_FACTORY.create(settings_type='icat',
+ICAT_CREDENTIALS = SETTINGS_FACTORY.create(settings_type='icat',
                                         username='USERNAME',
                                         password='PASSWORD',
                                         host='HOST',

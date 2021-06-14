@@ -18,7 +18,7 @@ from stomp.exception import ConnectFailedException
 from autoreduce_utils.message.message import Message
 from autoreduce_utils.clients.abstract_client import AbstractClient
 from autoreduce_utils.clients.connection_exception import ConnectionException
-from autoreduce_utils.settings import ACTIVEMQ_SETTINGS
+from autoreduce_utils.credentials import ACTIVEMQ_CREDENTIALS
 
 
 class QueueClient(AbstractClient):
@@ -27,7 +27,7 @@ class QueueClient(AbstractClient):
     """
     def __init__(self, credentials=None, consumer_name='queue_client'):
         if not credentials:
-            credentials = ACTIVEMQ_SETTINGS
+            credentials = ACTIVEMQ_CREDENTIALS
         super(QueueClient, self).__init__(credentials)  # pylint:disable=super-with-arguments
         self._connection = None
         self._consumer_name = consumer_name

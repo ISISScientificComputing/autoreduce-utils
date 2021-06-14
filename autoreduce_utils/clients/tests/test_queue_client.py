@@ -17,7 +17,7 @@ from autoreduce_utils.message.message import Message
 from autoreduce_utils.clients.connection_exception import ConnectionException
 from autoreduce_utils.clients.queue_client import QueueClient
 from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
-from autoreduce_utils.settings import ACTIVEMQ_SETTINGS
+from autoreduce_utils.credentials import ACTIVEMQ_CREDENTIALS
 
 
 # pylint:disable=protected-access,no-self-use
@@ -186,7 +186,7 @@ class TestQueueClient(TestCase):
         client.subscribe(mock_listener)
 
         mock_connection.set_listener.assert_called_with("queue_processor", mock_listener)
-        mock_connection.subscribe.assert_called_with(destination=ACTIVEMQ_SETTINGS.data_ready,
+        mock_connection.subscribe.assert_called_with(destination=ACTIVEMQ_CREDENTIALS.data_ready,
                                                      id=socket.getfqdn(),
                                                      ack="client-individual",
                                                      header={"activemq.prefetchSize": "1"})
