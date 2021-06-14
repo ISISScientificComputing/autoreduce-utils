@@ -1,8 +1,8 @@
 import os
-import pytest
 import sys
 import shutil
 import tempfile
+import pytest
 
 # pylint:disable=import-outside-toplevel
 

@@ -6,7 +6,6 @@
 # ############################################################################### #
 import tempfile
 from pathlib import Path
-from unittest.mock import Mock, patch
 from autoreduce_utils.migrate_credentials import migrate_credentials
 
 
