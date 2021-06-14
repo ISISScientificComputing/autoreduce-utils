@@ -11,7 +11,7 @@ Functions for login and query available from class
 
 import icat
 
-from autoreduce_utils.settings import ICAT_SETTINGS
+from autoreduce_utils.credentials import ICAT_CREDENTIALS
 from autoreduce_utils.clients.abstract_client import AbstractClient
 from autoreduce_utils.clients.connection_exception import ConnectionException
 
@@ -23,7 +23,7 @@ class ICATClient(AbstractClient):
     """
     def __init__(self, credentials=None):
         if not credentials:
-            credentials = ICAT_SETTINGS
+            credentials = ICAT_CREDENTIALS
         super(ICATClient, self).__init__(credentials)  # pylint:disable=super-with-arguments
         self.client = icat.Client(self.credentials.host)
 
