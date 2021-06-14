@@ -68,9 +68,17 @@ def test_log_level_env():
     assert LOG_LEVEL == "DEBUG"
 
 
+def test_pytest_env_var():
+    """ Test running with the pytest env var. """
+    os.environ["RUNNING_VIA_PYTEST"] = "1"
+    from autoreduce_utils.runtime_settings import ARCHIVE_ROOT
+    assert "data-archive" in ARCHIVE_ROOT
+
+
 def test_no_pytest_env_var():
     """ Test running without the pytest env var """
-    os.environ.pop("RUNNING_VIA_PYTEST")
+    if "RUNNING_VIA_PYTEST" in os.environ:
+        os.environ.pop("RUNNING_VIA_PYTEST")
     from autoreduce_utils.runtime_settings import ARCHIVE_ROOT
     assert "data-archive" in ARCHIVE_ROOT
 
