@@ -9,7 +9,7 @@ import os
 
 FACILITY = 'ISIS'
 
-AUTOREDUCE_HOME_ROOT = os.environ.get("AUTOREDUCTION_USERDIR", os.path.expanduser("~/.autoreduce")))
+AUTOREDUCE_HOME_ROOT = os.environ.get("AUTOREDUCTION_USERDIR", os.path.expanduser("~/.autoreduce"))
 
 os.makedirs(os.path.join(AUTOREDUCE_HOME_ROOT, "logs"), exist_ok=True)
 
@@ -20,7 +20,7 @@ CREDENTIALS_INI_FILE = os.environ.get("AUTOREDUCTION_CREDENTIALS",
                                       os.path.expanduser(f"{AUTOREDUCE_HOME_ROOT}/credentials.ini"))
 
 PROJECT_DEV_ROOT = os.path.join(AUTOREDUCE_HOME_ROOT, "dev")
-os.makedirs(PROJECT_DEV_ROOT,  exist_ok=True)
+os.makedirs(PROJECT_DEV_ROOT, exist_ok=True)
 
 # The reduction outputs are copied here on completion. They are saved in /tmp/<randomdir>
 # sa the reduction is running. By default the output is also saved locally
