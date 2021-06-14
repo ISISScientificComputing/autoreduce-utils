@@ -10,20 +10,20 @@ import pytest
 @pytest.fixture(autouse=True)
 def clear_module():
     """
-    Delete the "autoreduce_utils.runtime_settings" module from the ones currently imported in the interpreter runtime.
+    Delete the "autoreduce_utils.settings" module from the ones currently imported in the interpreter runtime.
     This should allow each test to import it in a fresh state, recomputing the effect of environment vars.
 
     This is a hack. Don't use it in code outside of testing.
     """
-    if "autoreduce_utils.runtime_settings" in sys.modules:
-        del sys.modules["autoreduce_utils.runtime_settings"]
+    if "autoreduce_utils.settings" in sys.modules:
+        del sys.modules["autoreduce_utils.settings"]
 
 
 def test_autoreduce_home_root_default():
     """
     Tests the default value of AUTOREDUCE_HOME_ROOT, and that the dir exists
     """
-    from autoreduce_utils.runtime_settings import AUTOREDUCE_HOME_ROOT, LOG_FILE, PROJECT_DEV_ROOT, \
+    from autoreduce_utils.settings import AUTOREDUCE_HOME_ROOT, LOG_FILE, PROJECT_DEV_ROOT, \
         CEPH_DIRECTORY, ARCHIVE_ROOT, CYCLE_DIRECTORY, SCRIPTS_DIRECTORY
     assert ".autoreduce" in AUTOREDUCE_HOME_ROOT
     assert os.path.exists(AUTOREDUCE_HOME_ROOT)
@@ -42,7 +42,7 @@ def test_autoreduce_home_root_env_var():
     """
     new_value = f"/tmp/{tempfile.TemporaryFile().name}"
     os.environ["AUTOREDUCTION_USERDIR"] = new_value
-    from autoreduce_utils.runtime_settings import AUTOREDUCE_HOME_ROOT, LOG_FILE, PROJECT_DEV_ROOT, \
+    from autoreduce_utils.settings import AUTOREDUCE_HOME_ROOT, LOG_FILE, PROJECT_DEV_ROOT, \
         CEPH_DIRECTORY, ARCHIVE_ROOT, CYCLE_DIRECTORY, SCRIPTS_DIRECTORY
     assert AUTOREDUCE_HOME_ROOT == new_value
     assert os.path.exists(AUTOREDUCE_HOME_ROOT)
@@ -57,21 +57,21 @@ def test_autoreduce_home_root_env_var():
 
 def test_log_level_default():
     """ Test the default log level """
-    from autoreduce_utils.runtime_settings import LOG_LEVEL
+    from autoreduce_utils.settings import LOG_LEVEL
     assert LOG_LEVEL == "INFO"
 
 
 def test_log_level_env():
     """ Test that the env var configures the log level """
     os.environ["LOGLEVEL"] = "DEBUG"
-    from autoreduce_utils.runtime_settings import LOG_LEVEL
+    from autoreduce_utils.settings import LOG_LEVEL
     assert LOG_LEVEL == "DEBUG"
 
 
 def test_pytest_env_var():
     """ Test running with the pytest env var. """
     os.environ["RUNNING_VIA_PYTEST"] = "1"
-    from autoreduce_utils.runtime_settings import ARCHIVE_ROOT
+    from autoreduce_utils.settings import ARCHIVE_ROOT
     assert "test-archive" in ARCHIVE_ROOT
 
 
@@ -79,7 +79,7 @@ def test_no_pytest_env_var():
     """ Test running without the pytest env var """
     if "RUNNING_VIA_PYTEST" in os.environ:
         os.environ.pop("RUNNING_VIA_PYTEST")
-    from autoreduce_utils.runtime_settings import ARCHIVE_ROOT
+    from autoreduce_utils.settings import ARCHIVE_ROOT
     assert "data-archive" in ARCHIVE_ROOT
 
 
@@ -91,7 +91,7 @@ def test_credentials_env_var():
     """
     new_value = "/tmp/123123123/"
     os.environ["AUTOREDUCTION_CREDENTIALS"] = new_value
-    from autoreduce_utils.runtime_settings import CREDENTIALS_INI_FILE
+    from autoreduce_utils.settings import CREDENTIALS_INI_FILE
     assert CREDENTIALS_INI_FILE == new_value
 
 
@@ -101,6 +101,6 @@ def test_production_env_var():
     production queue/db for manual operations.
     """
     os.environ["AUTOREDUCTION_PRODUCTION"] = "1"
-    from autoreduce_utils.runtime_settings import ARCHIVE_ROOT, CEPH_DIRECTORY
+    from autoreduce_utils.settings import ARCHIVE_ROOT, CEPH_DIRECTORY
     assert "/isis" in ARCHIVE_ROOT
     assert "/instrument" in CEPH_DIRECTORY
