@@ -107,7 +107,7 @@ class TestMessage(unittest.TestCase):
         When: attr.asdict() is called on a Message with populated values
         """
         populated_msg, populated_dict = self._populated()
-        actual = attr.asdict(populated_msg)
+        actual = populated_msg.to_dict()
         self.assertEqual(actual, populated_dict)
 
     def test_serialize_populated(self):
