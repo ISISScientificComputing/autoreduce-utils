@@ -92,3 +92,9 @@ class Message:
         """
         if destination == '/queue/DataReady':
             stages.validate_data_ready(self)
+
+    def to_dict(self):
+        """
+        Convert the message to a Python dictionary
+        """
+        return attr.asdict(self)
