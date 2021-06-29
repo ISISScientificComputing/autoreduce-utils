@@ -7,7 +7,6 @@
 """
 Command to move test_settings.py to settings.py
 """
-import sys
 import os
 import logging
 from shutil import copyfile
