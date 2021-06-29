@@ -16,8 +16,6 @@ from pathlib import Path
 from autoreduce_utils.settings import AUTOREDUCE_HOME_ROOT
 
 logger = logging.getLogger(__package__)
-logger.setLevel(logging.INFO)
-logger.addHandler(logging.StreamHandler(sys.stdout))
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
