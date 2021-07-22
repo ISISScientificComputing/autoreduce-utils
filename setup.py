@@ -14,7 +14,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='autoreduce_utils',
-      version='22.0.0.dev3',
+      version='22.0.0.dev4',
       description='ISIS Autoreduce',
       author='ISIS Autoreduction Team',
       url='https://github.com/ISISScientificComputing/autoreduce-utils/',
@@ -23,7 +23,7 @@ setup(name='autoreduce_utils',
           'gitpython==3.1.14',
           'python-icat==0.18.1',
           'suds-py3==1.4.4.1',
-          'stomp.py==6.1.0',
+          'stomp.py==7.0.0',
       ],
       packages=find_packages(),
       package_data={"autoreduce_utils": ["test_credentials.ini"]},
