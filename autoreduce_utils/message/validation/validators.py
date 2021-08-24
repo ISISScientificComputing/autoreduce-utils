@@ -15,7 +15,9 @@ def validate_run_number(run_number):
     :param run_number: The run number to validate
     """
     try:
-        if int(run_number) > 0:
+        if isinstance(run_number, int) and int(run_number) > 0:
+            return True
+        elif isinstance(run_number, list) and all(int(run_number) > 0 for run_number in run_number):
             return True
     except (ValueError, TypeError):
         return False
