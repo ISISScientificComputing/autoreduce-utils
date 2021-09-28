@@ -45,12 +45,14 @@ os.makedirs(PROJECT_DEV_ROOT, exist_ok=True)
 # unless AUTOREDUCTION_PRODUCTION is specified
 CEPH_DIRECTORY = f"{PROJECT_DEV_ROOT}/reduced-data/%s/RB%s/autoreduced/%s/"
 MANTID_PATH = "/tmp/Mantid/lib"
+AUTOREDUCE_API_URL = "http://127.0.0.1:8001/api"
 
 if "AUTOREDUCTION_PRODUCTION" in os.environ:
     # for when deploying on production - this is the real path where the mounts are
     ARCHIVE_ROOT = "\\\\isis\\inst$\\" if os.name == "nt" else "/isis"
     CEPH_DIRECTORY = "/instrument/%s/RBNumber/RB%s/autoreduced/%s"
     MANTID_PATH = "/opt/Mantid/lib"
+    AUTOREDUCE_API_URL = "https://reduce.isis.cclrc.ac.uk/api"
 elif "RUNNING_VIA_PYTEST" in os.environ:
     # For testing which uses a local folder to simulate an archive. It's nice for this
     # to be different than the development one, otherwise running the tests will delete
