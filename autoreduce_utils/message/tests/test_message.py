@@ -4,9 +4,7 @@
 # Copyright &copy; 2020 ISIS Rutherford Appleton Laboratory UKRI
 # SPDX - License - Identifier: GPL-3.0-or-later
 # ############################################################################### #
-"""
-Test the Message class
-"""
+"""Test the Message class."""
 import unittest
 import json
 
@@ -16,12 +14,13 @@ from autoreduce_utils.message.message import Message
 
 
 class TestMessage(unittest.TestCase):
-    """
-    Test cases for the Message class used with AMQ
-    """
+    """Test cases for the Message class used with AMQ."""
     @staticmethod
     def _empty():
-        """ Create and return an empty message object and corresponding dictionary"""
+        """
+        Create and return an empty message object and the corresponding
+        dictionary.
+        """
         empty_msg = Message()
         empty_dict = {
             'description': None,
@@ -47,7 +46,10 @@ class TestMessage(unittest.TestCase):
 
     @staticmethod
     def _populated():
-        """ Create and return a populated message object and corresponding dictionary """
+        """
+        Create and return a populated message object and the corresponding
+        dictionary.
+        """
         run_number = 11111
         rb_number = 2222222
         description = 'test message'
@@ -56,6 +58,7 @@ class TestMessage(unittest.TestCase):
             'description': description,
             'facility': "ISIS",
             'run_number': run_number,
+            'run_title': None,
             'instrument': None,
             'rb_number': rb_number,
             'started_by': None,
@@ -77,13 +80,14 @@ class TestMessage(unittest.TestCase):
 
     def test_init(self):
         """
-        Test: All the expected member variables are created
-        When: The class is initialised
+        Test that all the expected member variables are created when the class
+        is initialised.
         """
         empty_msg, _ = self._empty()
         self.assertEqual(empty_msg.description, "")
         self.assertEqual(empty_msg.facility, "ISIS")
         self.assertIsNone(empty_msg.run_number)
+        self.assertIsNone(empty_msg.run_title)
         self.assertIsNone(empty_msg.instrument)
         self.assertIsNone(empty_msg.rb_number)
         self.assertIsNone(empty_msg.started_by)
@@ -103,8 +107,8 @@ class TestMessage(unittest.TestCase):
 
     def test_to_dict_populated(self):
         """
-        Test: A dictionary with populated values in produced
-        When: attr.asdict() is called on a Message with populated values
+        Test that a dictionary with populated values in produced when
+        `attr.asdict()` is called on a Message with populated values.
         """
         populated_msg, populated_dict = self._populated()
         actual = populated_msg.to_dict()
@@ -112,8 +116,8 @@ class TestMessage(unittest.TestCase):
 
     def test_serialize_populated(self):
         """
-        Test: An expected JSON object is produced
-        When: The Message class is serialised
+        Test that an expected JSON object is produced when the Message class is
+        serialised.
         """
         populated_msg, populated_dict = self._populated()
         serialized = populated_msg.serialize()
@@ -122,8 +126,8 @@ class TestMessage(unittest.TestCase):
 
     def test_deserialize_populated(self):
         """
-        Test: A Dictionary with all the expected value is produced
-        When: A populated serialized object is deserialized
+        Test that a dictionary with all the expected value is produced when a
+        populated serialized object is deserialized.
         """
         populated_msg, populated_dict = self._populated()
         serialized = populated_msg.serialize()
@@ -132,8 +136,9 @@ class TestMessage(unittest.TestCase):
 
     def test_populate_from_dict_overwrite_true(self):
         """
-        Test: Values are added and overwritten in the member variables
-        When: Message.populate() is called with a non-empty dictionary and overwrite is True
+        Test that values are added and overwritten in the member variables when
+        `Message.populate()` is called with a non-empty dictionary and overwrite
+        is True.
         """
         _, populated_dict = self._populated()
         actual, _ = self._empty()
@@ -142,8 +147,9 @@ class TestMessage(unittest.TestCase):
 
     def test_populate_from_dict_overwrite_false(self):
         """
-        Test: Values are added but NOT overwritten in the member variables
-        When: Message.populate() is called with a non-empty dictionary and overwrite is False
+        Test that values are added but NOT overwritten in the member variables
+        when `Message.populate()` is called with a non-empty dictionary and
+        overwrite is False.
         """
         populated_msg, populated_dict = self._populated()
         populated_dict['job_id'] = 123
@@ -155,8 +161,9 @@ class TestMessage(unittest.TestCase):
 
     def test_populate_from_serialized_overwrite_true(self):
         """
-        Test: Values are added and overwritten in the member variables
-        When: Message.populate() called with a non-empty serialized object and overwrite is True
+        Test that values are added and overwritten in the member variables when
+        `Message.populate()` called with a non-empty serialized object and
+        overwrite is True.
         """
         populated_msg, populated_dict = self._populated()
         serialized = populated_msg.serialize()
@@ -166,8 +173,9 @@ class TestMessage(unittest.TestCase):
 
     def test_populate_from_serialized_overwrite_false(self):
         """
-        Test: Values are added but NOT overwritten in the member variables
-        When: Message.populate() called with a non-empty serialized object and overwrite is False
+        Test that values are added but NOT overwritten in the member variables
+        when `Message.populate()` called with a non-empty serialized object and
+        overwrite is False.
         """
         new_msg, _ = self._populated()
         new_msg.job_id = 123
@@ -181,8 +189,8 @@ class TestMessage(unittest.TestCase):
 
     def test_invalid_serialized(self):
         """
-        Test: A ValueError is raised
-        When: An invalid serialized object is supplied to Message.populate()
+        Test that a ValueError is raised when an invalid serialized object is
+        supplied to `Message.populate()`.
         """
         serialized = 'test'
         empty_msg, _ = self._empty()
@@ -190,8 +198,8 @@ class TestMessage(unittest.TestCase):
 
     def test_populate_with_invalid_key(self):
         """
-        Test: A warning is logged
-        When: An unknown key is used to populate the Message
+        Test that a warning is logged when an unknown key is used to populate
+        the Message.
         """
         args = {'unknown': True}
         msg = Message()
@@ -200,8 +208,8 @@ class TestMessage(unittest.TestCase):
 
     def test_validate_data_ready_valid(self):
         """
-        Test: No exception is raised
-        When: Calling validate for data_ready with a valid message
+        Test that no exception is raised when calling validate for data_ready
+        with a valid message.
         """
         message = Message(instrument='GEM',
                           run_number=111,
@@ -215,9 +223,6 @@ class TestMessage(unittest.TestCase):
             self.fail()
 
     def test_validate_data_ready_invalid(self):
-        """
-        Test: An exception is raised
-        When: An invalid Message is validated
-        """
+        """Test an exception is raised when an invalid Message is validated."""
         message = Message(instrument='Not an inst')
         self.assertRaises(RuntimeError, message.validate, '/queue/DataReady')
