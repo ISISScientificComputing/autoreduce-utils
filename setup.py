@@ -1,20 +1,20 @@
+"""
+Functionality for project setup and various installations. Enter the following
+for more details:
+    `python setup.py --help`
+"""
 # pylint:skip-file
-"""
-Wrapper for the functionality for various installation and project setup commands
-see:
-    `python setup.py help`
-for more details
-"""
 from os import path
 from setuptools import setup, find_packages
 
-# read the contents of the README file
+# Read the contents of the README file
 this_directory = path.abspath(path.dirname(__file__))
 with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
-
-setup(name='autoreduce_utils',
-      version='22.0.0.dev5',
+    
+setup(
+      name='autoreduce_utils',
+      version='22.0.0.dev6',
       description='ISIS Autoreduce',
       author='ISIS Autoreduction Team',
       url='https://github.com/ISISScientificComputing/autoreduce-utils/',
@@ -29,4 +29,5 @@ setup(name='autoreduce_utils',
       package_data={"autoreduce_utils": ["test_credentials.ini"]},
       entry_points={"console_scripts": ["autoreduce-creds-migrate = autoreduce_utils.migrate_credentials:main"]},
       long_description=long_description,
-      long_description_content_type='text/markdown')
+      long_description_content_type='text/markdown',
+     )
