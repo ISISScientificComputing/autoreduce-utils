@@ -19,7 +19,7 @@ class TestMessage(unittest.TestCase):
     def _empty():
         """
         Create and return an empty message object and the corresponding
-        dictionary.
+        dictionary as a tuple.
         """
         empty_msg = Message()
         empty_dict = {
@@ -48,7 +48,7 @@ class TestMessage(unittest.TestCase):
     def _populated():
         """
         Create and return a populated message object and the corresponding
-        dictionary.
+        dictionary as a tuple.
         """
         run_number = 11111
         rb_number = 2222222
@@ -189,7 +189,7 @@ class TestMessage(unittest.TestCase):
 
     def test_invalid_serialized(self):
         """
-        Test that a ValueError is raised when an invalid serialized object is
+        Test that a `ValueError` is raised when an invalid serialized object is
         supplied to `Message.populate()`.
         """
         serialized = 'test'
