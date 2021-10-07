@@ -45,7 +45,6 @@ class Message:
 
         Args:
             indent: The indent level passed to `json.dumps`.
-
             limit_reduction_script: If True, limit reduction_script to 50 chars
             in return.
 
@@ -78,12 +77,10 @@ class Message:
 
         Args:
             source: Object to populate class from.
-
             overwrite: If True, overwrite existing values of attributes.
 
         Raises:
             ValueError: If unable to recognise the serialised object.
-
             ValueError: If an unexpected key is encountered during message
             population.
         """
@@ -110,7 +107,7 @@ class Message:
         queue.
 
         Args:
-            destination: The name of the queue to send the data to
+            destination: The name of the queue to send the data to.
         """
         if destination == '/queue/DataReady':
             stages.validate_data_ready(self)
