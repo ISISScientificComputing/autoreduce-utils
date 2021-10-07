@@ -21,7 +21,7 @@ def validate_data_ready(message):
         'run_number': validators.validate_run_number(message.run_number),
         'rb_number': validators.validate_rb_number(message.rb_number),
         'started_by': isinstance(message.started_by, int),
-        'file_path': isinstance(message.data, str),
+        'file_path': isinstance(message.data, (str, list)),
         'facility': isinstance(message.facility, str)
     }
     if False in validity_dict.values():

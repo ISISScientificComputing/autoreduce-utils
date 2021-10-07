@@ -23,11 +23,14 @@ class TestValidators(unittest.TestCase):
         When: In valid and invalid cases
         """
         self.assertTrue(validators.validate_run_number(1))
-        self.assertTrue(validators.validate_run_number('001'))
+        self.assertTrue(validators.validate_run_number("001"))
+        self.assertTrue(validators.validate_run_number([123, 123]))
+        self.assertTrue(validators.validate_run_number(["123", "123"]))
 
         self.assertFalse(validators.validate_run_number(0))
         self.assertFalse(validators.validate_run_number(-1))
-        self.assertFalse(validators.validate_run_number('string'))
+        self.assertFalse(validators.validate_run_number("string"))
+        self.assertFalse(validators.validate_run_number(["string", "string"]))
 
     def test_validate_rb_number(self):
         """

@@ -8,14 +8,18 @@
 Validators to be used in the Message class
 """
 
+from typing import List, Union
 
-def validate_run_number(run_number):
+
+def validate_run_number(run_number: Union[int, str, List[int], List[str]]) -> bool:
     """
     Assert a run number is valid
     :param run_number: The run number to validate
     """
     try:
-        if int(run_number) > 0:
+        if isinstance(run_number, list) and all(int(run_number) > 0 for run_number in run_number):
+            return True
+        elif int(run_number) > 0:
             return True
     except (ValueError, TypeError):
         return False
