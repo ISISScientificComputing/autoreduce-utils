@@ -53,7 +53,7 @@ if "AUTOREDUCTION_PRODUCTION" in os.environ:
     CEPH_DIRECTORY = "/instrument/%s/RBNumber/RB%s/autoreduced/%s"
     MANTID_PATH = "/opt/Mantid/lib"
     AUTOREDUCE_API_URL = "https://reduce.isis.cclrc.ac.uk/api"
-elif "RUNNING_VIA_PYTEST" in os.environ or "PYTEST_CURRENT_TEST":
+elif "RUNNING_VIA_PYTEST" in os.environ or "PYTEST_CURRENT_TEST" in os.environ:
     # For testing which uses a local folder to simulate an archive. It's nice for this
     # to be different than the development one, otherwise running the tests will delete
     # any manual changes you've done to the archive folder, e.g. for testing reduction scripts
