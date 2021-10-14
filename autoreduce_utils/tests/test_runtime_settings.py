@@ -79,6 +79,8 @@ def test_no_pytest_env_var():
     """ Test running without the pytest env var """
     if "RUNNING_VIA_PYTEST" in os.environ:
         os.environ.pop("RUNNING_VIA_PYTEST")
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        os.environ.pop("PYTEST_CURRENT_TEST")
     from autoreduce_utils.settings import ARCHIVE_ROOT
     assert "data-archive" in ARCHIVE_ROOT
 
