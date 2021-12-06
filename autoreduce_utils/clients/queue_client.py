@@ -31,7 +31,7 @@ class QueueClient(AbstractClient):
         super(QueueClient, self).__init__(credentials)  # pylint:disable=super-with-arguments
         self._connection = None
         self._consumer_name = consumer_name
-        self._logger = logging.getLogger("queue_listener")
+        self._logger = logging.getLogger(__package__)
 
     def connect(self):
         """
