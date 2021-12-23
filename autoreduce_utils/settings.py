@@ -41,9 +41,9 @@ PROJECT_DEV_ROOT = os.path.join(AUTOREDUCE_HOME_ROOT, "dev")
 os.makedirs(PROJECT_DEV_ROOT, exist_ok=True)
 
 # The reduction outputs are copied here on completion. They are saved in /tmp/<randomdir>
-# sa the reduction is running. By default the output is also saved locally
+# as the reduction is running. By default the output is also saved locally
 # unless AUTOREDUCTION_PRODUCTION is specified
-CEPH_DIRECTORY = f"{PROJECT_DEV_ROOT}/reduced-data/%s/RB%s/autoreduced/%s/"
+CEPH_DIRECTORY = f"{PROJECT_DEV_ROOT}/reduced-data/%s/RBNumber/RB%s/autoreduced/%s/"
 MANTID_PATH = "/tmp/Mantid/lib"
 AUTOREDUCE_API_URL = "http://127.0.0.1:8001/api"
 
