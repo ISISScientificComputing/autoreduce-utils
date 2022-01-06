@@ -14,6 +14,6 @@ class ConnectionException(Exception):
     Simple class for raising exceptions when we cannot connect to services
     """
     def __init__(self, service_name):
-        message = "Unable to connect to {0} with provided credentials. " \
-                  "Please check the {0} settings files then try again.".format(service_name)
+        message = f"Unable to connect to {service_name} with provided credentials. " \
+                  f"Please check the {service_name} settings files then try again."
         super(ConnectionException, self).__init__(message)  # pylint:disable=super-with-arguments

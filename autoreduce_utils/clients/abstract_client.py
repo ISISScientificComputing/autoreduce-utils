@@ -24,7 +24,7 @@ class AbstractClient:
 
     def __init__(self, credentials):
         if not isinstance(credentials, ClientSettings):
-            raise TypeError("Expected instance of ClientSettings not {}".format(type(credentials)))
+            raise TypeError(f"Expected instance of ClientSettings not {type(credentials)}")
         self.credentials = credentials
 
     @abstractmethod

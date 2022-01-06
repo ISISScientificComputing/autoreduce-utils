@@ -100,8 +100,7 @@ class ClientSettingsFactory:
         """
         for key, _ in actual.items():
             if key not in expected and key not in self.ignore_kwargs:
-                raise ValueError("{0} is not a recognised key word argument."
-                                 " Valid kwargs: {1}".format(key, expected))
+                raise ValueError(f"{key} is not a recognised key word argument." f" Valid kwargs: {expected}")
 
 
 class ICATSettings(ClientSettings):
@@ -127,7 +126,7 @@ class MySQLSettings(ClientSettings):
 
     def get_full_connection_string(self):
         """ :return: string for connecting directly to mysql service with user + pass """
-        return 'mysql+mysqldb://{0}:{1}@{2}/{3}'.format(self.username, self.password, self.host, self.database)
+        return f'mysql+mysqldb://{self.username}:{self.password}@{self.host}/{self.database}'
 
 
 class ActiveMQSettings(ClientSettings):

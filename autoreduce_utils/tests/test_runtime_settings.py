@@ -40,7 +40,7 @@ def test_autoreduce_home_root_env_var():
     Tests whether the value of AUTOREDUCE_HOME_ROOT can be changed with the env var,
      and that the new dir gets made when imported
     """
-    new_value = f"/tmp/{tempfile.TemporaryFile().name}"
+    new_value = f"/tmp/{tempfile.TemporaryFile().name}"  # pylint: disable=consider-using-with
     os.environ["AUTOREDUCTION_USERDIR"] = new_value
     from autoreduce_utils.settings import AUTOREDUCE_HOME_ROOT, LOG_FILE, PROJECT_DEV_ROOT, \
         CEPH_DIRECTORY, ARCHIVE_ROOT, CYCLE_DIRECTORY, SCRIPTS_DIRECTORY
