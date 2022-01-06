@@ -15,6 +15,7 @@ from autoreduce_utils.clients.settings.client_settings_factory import (ClientSet
 
 # pylint:disable=missing-docstring
 class TestClientSettingsFactory(unittest.TestCase):
+
     def setUp(self):
         self.factory = ClientSettingsFactory()
 

@@ -17,6 +17,7 @@ class TestStages(TestCase):
     """
     Assert the stages return the correct bool value based on if they are valid
     """
+
     def setUp(self):
         self.valid_message = Message(
             run_number=1234,

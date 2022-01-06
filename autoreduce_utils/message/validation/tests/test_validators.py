@@ -17,6 +17,7 @@ class TestValidators(unittest.TestCase):
     As the validators are simple bool returns,
     we are validating a function completely per test case
     """
+
     def test_validate_run_number(self):
         """
         Test: validate_run_number returns the expected result

@@ -15,6 +15,7 @@ from autoreduce_utils.message.message import Message
 
 class TestMessage(unittest.TestCase):
     """Test cases for the Message class used with AMQ."""
+
     @staticmethod
     def _empty():
         """
