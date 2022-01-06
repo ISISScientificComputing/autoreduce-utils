@@ -35,7 +35,8 @@ class ClientSettingsFactory:
         :return: A ClientSettings object
         """
         if settings_type.lower() not in self.valid_types:
-            raise ValueError(f"Factories creation settings type must be one of:" f"{','.join(self.valid_types)}")
+            raise ValueError(f"Factories creation settings type must be one of:"
+                             f"{','.join(self.valid_types)}")
         kwargs['username'] = username
         kwargs['password'] = password
         kwargs['host'] = host
@@ -100,7 +101,8 @@ class ClientSettingsFactory:
         """
         for key, _ in actual.items():
             if key not in expected and key not in self.ignore_kwargs:
-                raise ValueError(f"{key} is not a recognised key word argument." f" Valid kwargs: {expected}")
+                raise ValueError(f"{key} is not a recognised key word argument."
+                                 f" Valid kwargs: {expected}")
 
 
 class ICATSettings(ClientSettings):
@@ -148,6 +150,7 @@ class SFTPSettings(ClientSettings):
     """
     SFTP settings object
     """
+
     def __init__(self, **kwargs):  # pylint:disable=useless-super-delegation
         super(SFTPSettings, self).__init__(**kwargs)  # pylint:disable=super-with-arguments
 

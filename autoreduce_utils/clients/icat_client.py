@@ -21,6 +21,7 @@ class ICATClient(AbstractClient):
     This class provides a layer of abstraction from Python ICAT.
     Only allowing logging in and querying.
     """
+
     def __init__(self, credentials=None):
         if not credentials:
             credentials = ICAT_CREDENTIALS
