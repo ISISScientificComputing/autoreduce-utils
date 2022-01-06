@@ -38,8 +38,8 @@ class TestValidators(unittest.TestCase):
         """
         valid_values = [1000000, 2000000, "1000000", 9999999]
         for i in valid_values:
-            self.assertTrue(validators.validate_rb_number(i), "Failed with value %s" % i)
+            self.assertTrue(validators.validate_rb_number(i), f"Failed with value {i}")
 
         invalid_values = [0, 0.1, -1, -100, None, "foo", 12345678910, "1231435252242"]
         for i in invalid_values:
-            self.assertFalse(validators.validate_rb_number(i), "Failed with value %s" % i)
+            self.assertFalse(validators.validate_rb_number(i), f"Failed with value {i}")

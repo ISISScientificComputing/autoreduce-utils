@@ -7,7 +7,7 @@
 """
 Combination of validation checks to be performed on the Message at each stage of the pipeline
 """
-import autoreduce_utils.message.validation.validators as validators
+from autoreduce_utils.message.validation import validators
 from autoreduce_utils.message.validation.process import dict_to_string
 
 
