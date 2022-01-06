@@ -25,6 +25,7 @@ class QueueClient(AbstractClient):
     """
     Class for client to access messaging service via python
     """
+
     def __init__(self, credentials=None, consumer_name='queue_client'):
         if not credentials:
             credentials = ACTIVEMQ_CREDENTIALS
@@ -37,6 +38,7 @@ class QueueClient(AbstractClient):
         """
         Create the connection if the connection has not been created
         """
+
         if self._connection is None or not self._connection.is_connected():
             self.disconnect()
             self._create_connection()
@@ -50,6 +52,7 @@ class QueueClient(AbstractClient):
         """
         Disconnect from queue service
         """
+
         self._logger.info("Starting disconnect from ActiveMQ...")
         if self._connection is not None and self._connection.is_connected():
             # By passing a receipt Stomp will call stop on the transport layer
@@ -69,6 +72,7 @@ class QueueClient(AbstractClient):
         """
         Create the connection to the queuing service and store as self._connection
         """
+
         inteded_for_production = "AUTOREDUCTION_PRODUCTION" in os.environ
         aimed_at_dev = self.credentials.host.startswith("127") or "dev" in str(
             self.credentials.host) or self.credentials.host == "activemq"
@@ -97,6 +101,7 @@ class QueueClient(AbstractClient):
         Subscribes to the data_ready queue
         :param listener: QueueListener object
         """
+
         self._logger.info("Subscribing to data ready queue")
         self._connection.set_listener("queue_processor", listener)
         self._connection.subscribe(destination=self.credentials.data_ready,

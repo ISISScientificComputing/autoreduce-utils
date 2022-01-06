@@ -25,11 +25,13 @@ class TestQueueClient(TestCase):
     """
     Exercises the queue client
     """
+
     def test_default_init(self):
         """
         Test: Class variables are created and set
         When: QueueClient is initialised with default credentials
         """
+
         client = QueueClient()
         self.assertIsNotNone(client.credentials)
         self.assertIsNone(client._connection)
@@ -40,6 +42,7 @@ class TestQueueClient(TestCase):
         Test: A TypeError is raised
         When: QueueClient is initialised with invalid credentials
         """
+
         self.assertRaises(TypeError, QueueClient, 'string')
 
     def test_valid_connection(self):
@@ -48,6 +51,7 @@ class TestQueueClient(TestCase):
         (This by proxy will also test the get_connection function)
         When: connect is called while valid credentials are held
         """
+
         client = QueueClient()
         client.connect()
         self.assertTrue(client._connection.is_connected())
@@ -57,6 +61,7 @@ class TestQueueClient(TestCase):
         Test: A ConnectionException is raised
         When: _test_connection is called while invalid credentials are held
         """
+
         incorrect_credentials = ClientSettingsFactory().create('queue',
                                                                username='not-user',
                                                                password='not-pass',
@@ -71,6 +76,7 @@ class TestQueueClient(TestCase):
         Test: Connection is stopped and connection variables are set to None
         When: disconnect is called while a valid connection is currently established
         """
+
         client = QueueClient()
         mocked_connection = mock.Mock()
         client._connection = mocked_connection
@@ -88,6 +94,7 @@ class TestQueueClient(TestCase):
         Test: send sends the given data using stomp.send
         When: send is called with a string argument for message
         """
+
         client = QueueClient()
         client.send('dataready', 'raw_json_dump')
         (args, _) = mock_stomp_send.call_args
@@ -100,6 +107,7 @@ class TestQueueClient(TestCase):
         Test: send sends the given data using stomp.send
         When: send is called with a Message instance argument for message
         """
+
         client = QueueClient()
         message = Message(description="test-message")
         client.send('dataready', message)
@@ -113,6 +121,7 @@ class TestQueueClient(TestCase):
         Test: ack sends an ack frame using stomp.ack
         When: ack is called while a valid connection is held
         """
+
         client = QueueClient()
         client.connect()
         client.ack("test", "subscription")
@@ -123,6 +132,7 @@ class TestQueueClient(TestCase):
         Test: Exception raised
         When: production host used in non production environment
         """
+
         client = QueueClient()
         real_host = client.credentials.host
         client.credentials.host = "production.domain.com"
@@ -134,6 +144,7 @@ class TestQueueClient(TestCase):
         Test: Exception raised
         When: Local host used in production environment
         """
+
         client = QueueClient()
         real_host = client.credentials.host
 
@@ -154,8 +165,8 @@ class TestQueueClient(TestCase):
         """
         Test: Exception raised
         When: test_connection called when not connected
-
         """
+
         client = QueueClient()
         mock_connection = MagicMock()
         mock_connection.is_connected.return_value = False
@@ -168,6 +179,7 @@ class TestQueueClient(TestCase):
         Test: test_connection returns True
         When: Connected
         """
+
         client = QueueClient()
         mock_connection = MagicMock()
         mock_connection.is_connected.return_value = True
@@ -179,6 +191,7 @@ class TestQueueClient(TestCase):
         Test: correct calls made
         When: subscribe is called
         """
+
         client = QueueClient()
         mock_connection = MagicMock()
         mock_listener = MagicMock()

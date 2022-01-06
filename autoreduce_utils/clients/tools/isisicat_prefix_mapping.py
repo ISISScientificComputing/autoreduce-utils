@@ -16,6 +16,7 @@ def get_icat_instrument_prefix(instrument_fullname: str) -> str:
     Queries ICAT for shorter names for all Autoreduction instruments or only selection if passed in
     :return: instrument prefix
     """
+
     client = ICATClient()
 
     try:

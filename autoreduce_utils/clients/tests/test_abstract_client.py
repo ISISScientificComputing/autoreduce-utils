@@ -15,11 +15,13 @@ from autoreduce_utils.clients.settings.client_settings import ClientSettings
 
 # pylint:disable=missing-docstring
 class TestAbstractClient(unittest.TestCase):
+
     def test_client_settings_init(self):
         """
         Test: A client is created
         When: A class which implements AbstractClient is initiated with a ClientSettings argument
         """
+
         valid_settings = ClientSettings(username='user', password='pass', host='host', port='123')
         interface = ClientWrapper(credentials=valid_settings)
         self.assertIsNotNone(interface)
@@ -30,6 +32,7 @@ class TestAbstractClient(unittest.TestCase):
         When: A class which implements AbstractClient is initiated with an argument that
         extends ClientSettings
         """
+
         class DerivedSettings(ClientSettings):
             pass
 
@@ -53,6 +56,7 @@ class ClientWrapper(AbstractClient):  # pragma: no cover
     invalid ClientSettings objects.
     See use in utils.clients.tests..test_abstract_client.test_invalid_init (above)
     """
+
     def connect(self):
         pass
 
