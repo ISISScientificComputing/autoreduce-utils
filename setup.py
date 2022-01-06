@@ -21,8 +21,8 @@ setup(
     install_requires=[
         'attrs==21.2.0',
         'gitpython==3.1.14',
-        'python-icat==0.18.1',
-        'suds-py3==1.4.4.1',
+        'python-icat==0.20.1',
+        'suds-py3==1.4.5.0',
         'stomp.py==7.0.0',
     ],
     packages=find_packages(),
