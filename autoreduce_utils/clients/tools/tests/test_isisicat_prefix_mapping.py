@@ -18,6 +18,7 @@ class MockInstrumentQueryResult:
     """
     Mocks result of isisicat_prefix_mapping.client.execute_query for an instrument
     """
+
     def __init__(self, name, full_name):
         self.name = name
         # camelCase used due to mocking of external class
@@ -28,6 +29,7 @@ class TestICATPrefixMapping(unittest.TestCase):
     """
     Test ICAT prefix mapping
     """
+
     DIR = "utils.clients.tools.isisicat_prefix_mapping"
 
     @patch('icat.Client.__init__', return_value=None)
@@ -38,6 +40,7 @@ class TestICATPrefixMapping(unittest.TestCase):
         Test: If instruments are fetched through a query
         When: Testing if get_icat_instrument_prefix executes an ICAT query
         """
+
         self.assertEqual("ENG", get_icat_instrument_prefix("ENGINX"))
         mock_execute_query.assert_called_once()
 
@@ -48,6 +51,7 @@ class TestICATPrefixMapping(unittest.TestCase):
         Test: If the query raises due to a connection issue or wrong credentials
         When: Testing if get_icat_instrument_prefix executes an ICAT query
         """
+
         self.assertRaises(RuntimeError, get_icat_instrument_prefix, "ENGINX")
         mock_execute_query.assert_called_once()
 
@@ -60,5 +64,6 @@ class TestICATPrefixMapping(unittest.TestCase):
         Test: RuntimeError raised
         When: get_instrument_prefix called on invalid instrument
         """
+
         self.assertRaises(RuntimeError, get_icat_instrument_prefix, "INVALIDINSTRUMENT")
         mock_logger_warning.assert_called_once()

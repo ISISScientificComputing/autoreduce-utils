@@ -14,6 +14,7 @@ from autoreduce_utils.message.validation import process
 
 
 class TestProcess(unittest.TestCase):
+
     def setUp(self):
         self.true_validity_dict = {
             'check_1': True,

@@ -30,6 +30,7 @@ class ClientSettings:
         """
         Raise exception if param is not string castable
         """
+
         try:
             # Bool and float values are clearly easy mistakes
             if isinstance(param, (bool, float)):

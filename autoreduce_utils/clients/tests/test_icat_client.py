@@ -22,11 +22,13 @@ from autoreduce_utils.clients.connection_exception import ConnectionException
 
 def raise_icat_session_error():
     """ function required to raise ICATSessionErrors in mocks """
+
     raise icat.ICATSessionError('ICAT session error raised from mock')
 
 
 # pylint:disable=missing-docstring,no-self-use
 class TestICATClient(unittest.TestCase):
+
     @patch('icat.Client.__init__', return_value=None)
     def test_default_init(
         self,
@@ -36,6 +38,7 @@ class TestICATClient(unittest.TestCase):
         Test: Class variables are created and set
         When: ICATClient is initialised with default credentials
         """
+
         client = ICATClient()
         self.assertEqual(client.credentials.username, 'YOUR-ICAT-USERNAME')
         self.assertEqual(client.credentials.password, 'YOUR-PASSWORD')
@@ -51,6 +54,7 @@ class TestICATClient(unittest.TestCase):
         Test: login is called on the stored client
         When: connect is called while valid credentials are held
         """
+
         client = ICATClient()
         mock_icat.assert_called_once()
         client.connect()
@@ -65,6 +69,7 @@ class TestICATClient(unittest.TestCase):
         Test: A ValueError is raised
         When: connect is called while invalid credentials are held
         """
+
         invalid_settings = ClientSettingsFactory().create('icat',
                                                           username='user',
                                                           password='pass',
@@ -80,6 +85,7 @@ class TestICATClient(unittest.TestCase):
         Test: logout is called on the stored client
         When: disconnect is called
         """
+
         client = ICATClient()
         client.disconnect()
         mock_logout.assert_called_once()
@@ -91,6 +97,7 @@ class TestICATClient(unittest.TestCase):
         Test: refresh is called on the stored client
         When: refresh is called
         """
+
         client = ICATClient()
         client.refresh()
         mock_autorefresh.assert_called_once()
@@ -102,6 +109,7 @@ class TestICATClient(unittest.TestCase):
         Test: refresh is called on the stored client
         When: _test_connection is called
         """
+
         client = ICATClient()
         # pylint:disable=protected-access
         self.assertTrue(client._test_connection())
@@ -114,6 +122,7 @@ class TestICATClient(unittest.TestCase):
         Test: A ConnectionException is raised
         When: _test_connection is called while an invalid connection is held
         """
+
         mock_refresh.side_effect = raise_icat_session_error
         client = ICATClient()
         # pylint:disable=protected-access
@@ -129,6 +138,7 @@ class TestICATClient(unittest.TestCase):
         Test: A query is executed
         When: execute_query is called without a connection having been established
         """
+
         # Add side effect to raise exception with icat.refresh
         mock_refresh.side_effect = raise_icat_session_error
         client = ICATClient()
@@ -146,6 +156,7 @@ class TestICATClient(unittest.TestCase):
         Test: A query is executed
         When: execute_query is called with a connection having been established
         """
+
         client = ICATClient()
         client.execute_query('icat query')
         mock_refresh.assert_called_once()

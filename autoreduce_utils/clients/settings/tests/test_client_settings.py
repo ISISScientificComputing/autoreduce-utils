@@ -14,6 +14,7 @@ from autoreduce_utils.clients.settings.client_settings import ClientSettings
 
 # pylint:disable=missing-docstring
 class TestClientSettings(TestCase):
+
     def test_valid_init(self):
         settings = ClientSettings(username='user', password='pass', host='host', port='123')
         self.assertIsNotNone(settings)
