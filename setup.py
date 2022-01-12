@@ -14,13 +14,13 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='autoreduce_utils',
-    version='22.0.0.dev10',
+    version='22.0.0.dev11',
     description='ISIS Autoreduce',
     author='ISIS Autoreduction Team',
     url='https://github.com/autoreduction/autoreduce-utils/',
     install_requires=[
         'attrs==21.4.0',
-        'gitpython==3.1.20',
+        'gitpython<=3.1.26',
         'python-icat==0.20.1',
         'suds-py3==1.4.5.0',
         'stomp.py==7.0.0',
