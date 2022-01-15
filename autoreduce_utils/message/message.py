@@ -36,7 +36,7 @@ class Message:
     message = attr.ib(default=None)
     retry_in = attr.ib(default=None)
     reduction_data = attr.ib(default=None)  # Required by reduction runner
-    software = attr.ib(default=None)
+    software = attr.ib(default={})
     flat_output = attr.ib(default=False)
 
     def serialize(self, indent=None, limit_reduction_script=False):

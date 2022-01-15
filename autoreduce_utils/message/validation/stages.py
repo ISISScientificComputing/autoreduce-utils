@@ -22,7 +22,8 @@ def validate_data_ready(message):
         'rb_number': validators.validate_rb_number(message.rb_number),
         'started_by': isinstance(message.started_by, int),
         'file_path': isinstance(message.data, (str, list)),
-        'facility': isinstance(message.facility, str)
+        'facility': isinstance(message.facility, str),
+        'software': isinstance(message.software, dict)
     }
     if False in validity_dict.values():
         raise RuntimeError(f"Validation failed: {dict_to_string(validity_dict)}")
