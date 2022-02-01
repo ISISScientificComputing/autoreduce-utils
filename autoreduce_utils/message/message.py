@@ -30,6 +30,7 @@ class Message:
     run_version = attr.ib(default=None)
     job_id = attr.ib(default=None)
     reduction_script = attr.ib(default=None)
+    use_stored_reduction_script = attr.ib(default=False)
     reduction_arguments = attr.ib(default={})
     reduction_log = attr.ib(default="")  # Cannot be null in database
     admin_log = attr.ib(default="")  # Cannot be null in database
