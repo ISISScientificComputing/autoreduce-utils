@@ -40,7 +40,7 @@ class TestMessage(unittest.TestCase):
             'admin_log': "",
             'return_message': None,
             'retry_in': None,
-            'software': None,
+            'software': {},
             'flat_output': False
         }
         return empty_msg, empty_dict
@@ -54,7 +54,8 @@ class TestMessage(unittest.TestCase):
         run_number = 11111
         rb_number = 2222222
         description = 'test message'
-        populated_msg = Message(run_number=run_number, rb_number=rb_number, description=description)
+        software = {"name": "Mantid", "version": "6.2.0"}
+        populated_msg = Message(run_number=run_number, rb_number=rb_number, description=description, software=software)
         populated_dict = {
             'description': description,
             'facility': "ISIS",
@@ -74,7 +75,7 @@ class TestMessage(unittest.TestCase):
             'message': None,
             'retry_in': None,
             'reduction_data': None,
-            'software': None,
+            'software': software,
             'flat_output': False
         }
         return populated_msg, populated_dict
@@ -98,12 +99,12 @@ class TestMessage(unittest.TestCase):
         self.assertIsNone(empty_msg.job_id)
         self.assertIsNone(empty_msg.reduction_script)
         self.assertEqual(empty_msg.reduction_arguments, {})
+        self.assertEqual(empty_msg.software, {})
         self.assertEqual(empty_msg.reduction_log, "")
         self.assertEqual(empty_msg.admin_log, "")
         self.assertIsNone(empty_msg.message)
         self.assertIsNone(empty_msg.retry_in)
         self.assertIsNone(empty_msg.reduction_data)
-        self.assertIsNone(empty_msg.software)
         self.assertFalse(empty_msg.flat_output)
 
     def test_to_dict_populated(self):
@@ -212,12 +213,18 @@ class TestMessage(unittest.TestCase):
         Test that no exception is raised when calling validate for data_ready
         with a valid message.
         """
-        message = Message(instrument='GEM',
-                          run_number=111,
-                          rb_number=2222222,
-                          data='file/path',
-                          facility="ISIS",
-                          started_by=0)
+        message = Message(
+            instrument='GEM',
+            run_number=111,
+            rb_number=2222222,
+            data='file/path',
+            facility="ISIS",
+            started_by=0,
+            software={
+                "name": "Mantid",
+                "version": "6.2.0",
+            },
+        )
         try:
             self.assertIsNone(message.validate('/queue/DataReady'))
         except RuntimeError:
