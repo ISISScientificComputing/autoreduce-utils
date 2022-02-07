@@ -85,18 +85,6 @@ def test_no_pytest_env_var():
     assert "data-archive" in ARCHIVE_ROOT
 
 
-def test_credentials_env_var():
-    """
-    Test specifying the location of a credentials.ini with the env var.
-    This is used occassionally with containers, when there is some issue with
-    mounting ~/.autoreduce of the local user.
-    """
-    new_value = "/tmp/123123123/"
-    os.environ["AUTOREDUCTION_CREDENTIALS"] = new_value
-    from autoreduce_utils.settings import CREDENTIALS_INI_FILE
-    assert CREDENTIALS_INI_FILE == new_value
-
-
 def test_production_env_var():
     """
     Test running with production paths. Only used on production machines, or when contacting
