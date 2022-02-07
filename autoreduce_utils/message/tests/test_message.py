@@ -126,6 +126,18 @@ class TestMessage(unittest.TestCase):
         actual = json.loads(serialized)
         self.assertEqual(actual, populated_dict)
 
+    def test_serialize_limited_script(self):
+        """
+        Test that an expected JSON object is produced when the Message class is
+        serialised.
+        """
+        populated_msg, populated_dict = self._populated()
+        populated_msg.reduction_script = ""
+        populated_dict['reduction_script'] = ""
+        serialized = populated_msg.serialize(limit_reduction_script=True)
+        actual = json.loads(serialized)
+        self.assertEqual(actual, populated_dict)
+
     def test_deserialize_populated(self):
         """
         Test that a dictionary with all the expected value is produced when a

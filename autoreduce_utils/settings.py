@@ -34,9 +34,6 @@ logging.basicConfig(format="[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(
 logging.getLogger('stomp.py').setLevel("ERROR")
 #####################################################################################################
 
-CREDENTIALS_INI_FILE = os.environ.get("AUTOREDUCTION_CREDENTIALS",
-                                      os.path.expanduser(f"{AUTOREDUCE_HOME_ROOT}/credentials.ini"))
-
 PROJECT_DEV_ROOT = os.path.join(AUTOREDUCE_HOME_ROOT, "dev")
 os.makedirs(PROJECT_DEV_ROOT, exist_ok=True)
 
