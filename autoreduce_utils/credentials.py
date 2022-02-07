@@ -13,7 +13,8 @@ from autoreduce_utils.clients.settings.client_settings_factory import ClientSett
 
 from dotenv import load_dotenv
 
-load_dotenv()
+if not "AUTOREDUCTION_PRODUCTION" in os.environ:
+    load_dotenv()
 
 SETTINGS_FACTORY = ClientSettingsFactory()
 
