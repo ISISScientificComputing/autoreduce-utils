@@ -8,49 +8,45 @@
 """
 Settings for connecting to the test services that run locally
 """
-import configparser
-
-from autoreduce_utils.settings import CREDENTIALS_INI_FILE
+import os
 from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
 
-CONFIG = configparser.ConfigParser()
-CONFIG.read(CREDENTIALS_INI_FILE)
+from dotenv import load_dotenv
 
-
-def get_setting(section: str, key: str) -> str:
-    """
-    Gets the value of the key from the section.
-    """
-    return str(CONFIG.get(section, key, raw=True,
-                          fallback=''))  # raw=True to allow strings with special characters to be passed
-
+load_dotenv()
 
 SETTINGS_FACTORY = ClientSettingsFactory()
 
 ICAT_CREDENTIALS = SETTINGS_FACTORY.create('icat',
-                                           username=get_setting('ICAT', 'user'),
-                                           password=get_setting('ICAT', 'password'),
-                                           host=get_setting('ICAT', 'host'),
+                                           username=os.getenv('ICAT_USER'),
+                                           password=os.getenv('ICAT_PASSWORD'),
+                                           host=os.getenv('ICAT_HOST'),
                                            port='',
-                                           authentication_type=get_setting('ICAT', 'auth'))
+                                           authentication_type=os.getenv('ICAT_AUTH'))
 
 DB_CREDENTIALS = SETTINGS_FACTORY.create('database',
-                                         username=get_setting('DATABASE', 'user'),
-                                         password=get_setting('DATABASE', 'password'),
-                                         host=get_setting('DATABASE', 'host'),
-                                         port=get_setting('DATABASE', 'port'),
-                                         database_name=get_setting('DATABASE', 'name'))
+                                         username=os.getenv('DATABASE_USERNAME'),
+                                         password=os.getenv('DATABASE_PASSWORD'),
+                                         host=os.getenv('DATABASE_HOST'),
+                                         port=os.getenv('DATABASE_PORT'),
+                                         database_name=os.getenv('DATABASE_NAME'))
 
 ACTIVEMQ_CREDENTIALS = SETTINGS_FACTORY.create('queue',
-                                               username=get_setting('QUEUE', 'user'),
-                                               password=get_setting('QUEUE', 'password'),
-                                               host=get_setting('QUEUE', 'host'),
-                                               port=get_setting('QUEUE', 'port'))
+                                               username=os.getenv('ACTIVEMQ_USERNAME'),
+                                               password=os.getenv('ACTIVEMQ_PASSWORD'),
+                                               host=os.getenv('ACTIVEMQ_HOST'),
+                                               port=os.getenv('ACTIVEMQ_PORT'))
 
 CYCLE_SETTINGS = SETTINGS_FACTORY.create('cycle',
-                                         username=get_setting('CYCLE', 'user'),
-                                         password=get_setting('CYCLE', 'password'),
+                                         username=os.getenv('CYCLE_USER'),
+                                         password=os.getenv('CYCLE_PASSWORD'),
                                          host='',
                                          port='',
-                                         uows_url=get_setting('CYCLE', 'uows_url'),
-                                         scheduler_url=get_setting('CYCLE', 'scheduler_url'))
+                                         uows_url=os.getenv('CYCLE_UOWS_URL'),
+                                         scheduler_url=os.getenv('CYCLE_SCHEDULER_URL'))
+
+SFTP_SETTINGS = SETTINGS_FACTORY.create('sftp',
+                                        username=os.getenv('SFTP_USERNAME'),
+                                        password=os.getenv('SFTP_PASSWORD'),
+                                        host=os.getenv('SFTP_HOST'),
+                                        port=os.getenv('SFTP_PORT'))
