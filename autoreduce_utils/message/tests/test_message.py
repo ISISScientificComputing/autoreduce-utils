@@ -128,15 +128,14 @@ class TestMessage(unittest.TestCase):
 
     def test_serialize_limited_script(self):
         """
-        Test that an expected JSON object is produced when the Message class is
-        serialised.
+        Test that the truncated reduction script is serialized correctly.
         """
         populated_msg, populated_dict = self._populated()
-        populated_msg.reduction_script = ""
-        populated_dict['reduction_script'] = ""
+        populated_msg.reduction_script = 'a' * 100
+        populated_dict['reduction_script'] = 'a' * 100
         serialized = populated_msg.serialize(limit_reduction_script=True)
         actual = json.loads(serialized)
-        self.assertEqual(actual, populated_dict)
+        self.assertEqual(len(actual["reduction_script"]), 50)
 
     def test_deserialize_populated(self):
         """
