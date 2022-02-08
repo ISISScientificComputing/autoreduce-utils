@@ -23,7 +23,7 @@ setup(
         'gitpython<=3.1.26',
         'python-icat==0.20.1',
         'suds-py3==1.4.5.0',
-        'stomp.py==7.0.0',
+        'stomp.py==8.0.0',
     ],
     packages=find_packages(),
     package_data={"autoreduce_utils": ["test_credentials.ini"]},
