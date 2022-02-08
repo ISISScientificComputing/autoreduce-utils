@@ -27,9 +27,12 @@ jobs:
 
       - name: Set up Direnv
         run: |-
-          curl "https://raw.githubusercontent.com/autoreduction/autoreduce-workspace/add-direnv-file/.env" > .env
+          curl -qfsSL "https://github.com/direnv/direnv/releases/download/v2.21.3/direnv.linux-amd64" > direnv
+          chmod +x direnv
+          sudo mv direnv /usr/local/bin
           eval "$(direnv export bash)"
           exec bash
+          curl "https://raw.githubusercontent.com/autoreduction/autoreduce-workspace/add-direnv-file/.env" > .env
           direnv activate
 
       - uses: autoreduction/autoreduce-actions/build@main
