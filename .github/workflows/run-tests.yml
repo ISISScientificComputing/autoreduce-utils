@@ -5,7 +5,6 @@ jobs:
   pytest:
     name: Pytest
     runs-on: ubuntu-latest
-    environment: development
     strategy:
       fail-fast: false
       matrix:
@@ -30,6 +29,11 @@ jobs:
         with:
           package_name: autoreduce_utils
           migrate_db: false
+
+      - name: "Launch action"
+        uses: Steph0/dotenv-configserver
+        with:
+          repository: "autoreduction/autoreduce-workspace"
 
       - name: Run unit tests
         run: >-
