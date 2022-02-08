@@ -11,11 +11,6 @@ Settings for connecting to the test services that run locally
 import os
 from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
 
-from dotenv import load_dotenv
-
-if not "AUTOREDUCTION_PRODUCTION" in os.environ:
-    load_dotenv()
-
 SETTINGS_FACTORY = ClientSettingsFactory()
 
 ICAT_CREDENTIALS = SETTINGS_FACTORY.create('icat',
