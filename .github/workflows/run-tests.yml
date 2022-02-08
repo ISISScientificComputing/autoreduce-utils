@@ -97,13 +97,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Direnv
-        run: |-
-          curl "https://raw.githubusercontent.com/autoreduction/autoreduce-workspace/add-direnv-file/.env" > .env
-          eval "$(direnv export bash)"
-          exec bash
-          direnv activate
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -120,6 +113,11 @@ jobs:
         with:
           package_name: autoreduce_utils
           migrate_db: false
+
+      - name: Remote dotenv to Environment (configserver alike)
+        uses: Steph0/dotenv-configserver@v1.2.0
+        with:
+          repository: "autoreduction/autoreduce-workspace"
 
       - name: Pylint tests
         run: |
