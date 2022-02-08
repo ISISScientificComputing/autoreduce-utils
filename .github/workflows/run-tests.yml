@@ -25,6 +25,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
+      - name: Set up Direnv
+        run: |
+        curl https://raw.githubusercontent.com/autoreduction/autoreduce-workspace/add-direnv-file/.env -o .env
+        eval "$(direnv export bash)"
+        exec bash
+        direnv activate
+
       - uses: autoreduction/autoreduce-actions/build@main
         with:
           package_name: autoreduce_utils
@@ -91,6 +98,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Set up Direnv
         run: |
         curl https://raw.githubusercontent.com/autoreduction/autoreduce-workspace/add-direnv-file/.env -o .env
         eval "$(direnv export bash)"
