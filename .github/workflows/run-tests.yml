@@ -91,6 +91,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        run: |
+        curl https://raw.githubusercontent.com/autoreduction/autoreduce-workspace/add-direnv-file/.env -o .env
+        eval "$(direnv export bash)"
+        exec bash
+        direnv activate
 
       - name: Set up Python
         uses: actions/setup-python@v2
