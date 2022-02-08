@@ -89,7 +89,7 @@ class QueueClient(AbstractClient):
         if self._connection is None or not self._connection.is_connected():
             try:
                 host_port = [(self.credentials.host, int(self.credentials.port))]
-                connection = stomp.Connection(host_and_ports=host_port, use_ssl=False)
+                connection = stomp.Connection(host_and_ports=host_port)
                 self._logger.info("Starting connection to %s", host_port)
                 connection.connect(username=self.credentials.username, passcode=self.credentials.password, wait=True)
             except ConnectFailedException as exp:
