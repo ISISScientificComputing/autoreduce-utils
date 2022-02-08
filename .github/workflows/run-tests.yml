@@ -5,6 +5,7 @@ jobs:
   pytest:
     name: Pytest
     runs-on: ubuntu-latest
+    environment: development
     strategy:
       fail-fast: false
       matrix:
@@ -24,16 +25,6 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-
-      - name: Set up Direnv
-        run: |-
-          curl -qfsSL "https://github.com/direnv/direnv/releases/download/v2.21.3/direnv.linux-amd64" > direnv
-          chmod +x direnv
-          sudo mv direnv /usr/local/bin
-          eval "$(direnv export bash)"
-          exec bash
-          curl "https://raw.githubusercontent.com/autoreduction/autoreduce-workspace/add-direnv-file/.env" > .env
-          direnv activate
 
       - uses: autoreduction/autoreduce-actions/build@main
         with:
