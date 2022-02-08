@@ -30,8 +30,8 @@ jobs:
           package_name: autoreduce_utils
           migrate_db: false
 
-      - name: "Launch action"
-        uses: Steph0/dotenv-configserver
+      - name: Remote dotenv to Environment (configserver alike)
+        uses: Steph0/dotenv-configserver@v1.2.0
         with:
           repository: "autoreduction/autoreduce-workspace"
 
