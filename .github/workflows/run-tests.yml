@@ -30,11 +30,6 @@ jobs:
           package_name: autoreduce_utils
           migrate_db: false
 
-      - name: Remote dotenv to Environment (configserver alike)
-        uses: Steph0/dotenv-configserver@v1.2.0
-        with:
-          repository: "autoreduction/autoreduce-workspace"
-
       - name: Run unit tests
         run: >-
           pytest --cov=autoreduce_utils --cov-report=xml
@@ -113,11 +108,6 @@ jobs:
         with:
           package_name: autoreduce_utils
           migrate_db: false
-
-      - name: Remote dotenv to Environment (configserver alike)
-        uses: Steph0/dotenv-configserver@v1.2.0
-        with:
-          repository: "autoreduction/autoreduce-workspace"
 
       - name: Pylint tests
         run: |
