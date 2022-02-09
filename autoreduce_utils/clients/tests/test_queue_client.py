@@ -16,8 +16,6 @@ from unittest.mock import patch, MagicMock
 from autoreduce_utils.message.message import Message
 from autoreduce_utils.clients.connection_exception import ConnectionException
 from autoreduce_utils.clients.queue_client import QueueClient
-from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
-from autoreduce_utils.credentials import ACTIVEMQ_CREDENTIALS
 
 
 # pylint:disable=protected-access,no-self-use
@@ -33,17 +31,8 @@ class TestQueueClient(TestCase):
         """
 
         client = QueueClient()
-        self.assertIsNotNone(client.credentials)
         self.assertIsNone(client._connection)
         self.assertEqual('queue_client', client._consumer_name)
-
-    def test_invalid_init(self):
-        """
-        Test: A TypeError is raised
-        When: QueueClient is initialised with invalid credentials
-        """
-
-        self.assertRaises(TypeError, QueueClient, 'string')
 
     def test_valid_connection(self):
         """
@@ -56,18 +45,19 @@ class TestQueueClient(TestCase):
         client.connect()
         self.assertTrue(client._connection.is_connected())
 
+    @mock.patch.dict(os.environ, {
+        "ACTIVEMQ_USER": "not-user",
+        "ACTIVEMQ_PASSWORD": "not-pass",
+        "ACTIVEMQ_HOST": "127.does.not.exist",
+        "ACTIVEMQ_PORT": "1234"
+    },
+                     clear=True)
     def test_connection_failed_invalid_credentials(self):
         """
         Test: A ConnectionException is raised
         When: _test_connection is called while invalid credentials are held
         """
-
-        incorrect_credentials = ClientSettingsFactory().create('queue',
-                                                               username='not-user',
-                                                               password='not-pass',
-                                                               host='127.does.not.exist',
-                                                               port='1234')
-        client = QueueClient(incorrect_credentials)
+        client = QueueClient()
         with self.assertRaises(ConnectionException):
             client.connect()
 
@@ -134,10 +124,10 @@ class TestQueueClient(TestCase):
         """
 
         client = QueueClient()
-        real_host = client.credentials.host
-        client.credentials.host = "production.domain.com"
+        real_host = client.activemq_host
+        client.activemq_host = "production.domain.com"
         self.assertRaisesRegex(RuntimeError, "non-development", client._create_connection)
-        client.credentials.host = real_host
+        client.activemq_host = real_host
 
     def test_create_connection_bad_production(self):
         """
@@ -146,19 +136,19 @@ class TestQueueClient(TestCase):
         """
 
         client = QueueClient()
-        real_host = client.credentials.host
+        real_host = client.activemq_host
 
         os.environ["AUTOREDUCTION_PRODUCTION"] = "1"
-        client.credentials.host = "127.0.0.1"
+        client.activemq_host = "127.0.0.1"
         self.assertRaisesRegex(RuntimeError, ".*production environment.*", client._create_connection)
 
-        client.credentials.host = "somethingdev"
+        client.activemq_host = "somethingdev"
         self.assertRaisesRegex(RuntimeError, ".*production environment.*", client._create_connection)
 
-        client.credentials.host = "activemq"
+        client.activemq_host = "activemq"
         self.assertRaisesRegex(RuntimeError, ".*production environment.*", client._create_connection)
 
-        client.credentials.host = real_host
+        client.activemq_host = real_host
         del os.environ["AUTOREDUCTION_PRODUCTION"]
 
     def test_test_connection_not_connected(self):
@@ -199,7 +189,7 @@ class TestQueueClient(TestCase):
         client.subscribe(mock_listener)
 
         mock_connection.set_listener.assert_called_with("queue_processor", mock_listener)
-        mock_connection.subscribe.assert_called_with(destination=ACTIVEMQ_CREDENTIALS.data_ready,
+        mock_connection.subscribe.assert_called_with(destination="/queue/DataReady",
                                                      id=socket.getfqdn(),
                                                      ack="client-individual",
                                                      header={"activemq.prefetchSize": "1"})

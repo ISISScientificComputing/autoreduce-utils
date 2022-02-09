@@ -16,20 +16,18 @@ import stomp
 from stomp.exception import ConnectFailedException
 
 from autoreduce_utils.message.message import Message
-from autoreduce_utils.clients.abstract_client import AbstractClient
 from autoreduce_utils.clients.connection_exception import ConnectionException
-from autoreduce_utils.credentials import ACTIVEMQ_CREDENTIALS
 
 
-class QueueClient(AbstractClient):
+class QueueClient():
     """
     Class for client to access messaging service via python
     """
 
-    def __init__(self, credentials=None, consumer_name='queue_client'):
-        if not credentials:
-            credentials = ACTIVEMQ_CREDENTIALS
-        super(QueueClient, self).__init__(credentials)  # pylint:disable=super-with-arguments
+    def __init__(self, consumer_name='queue_client'):
+        self.activemq_host = os.getenv("ACTIVEMQ_HOST")
+        self.activemq_port = os.getenv("ACTIVEMQ_PORT")
+        self.activemq_user = os.getenv("ACTIVEMQ_USER")
         self._connection = None
         self._consumer_name = consumer_name
         self._logger = logging.getLogger(__package__)
@@ -74,24 +72,26 @@ class QueueClient(AbstractClient):
         """
 
         inteded_for_production = "AUTOREDUCTION_PRODUCTION" in os.environ
-        aimed_at_dev = self.credentials.host.startswith("127") or "dev" in str(
-            self.credentials.host) or self.credentials.host == "activemq"
+
+        aimed_at_dev = False
+        if self.activemq_host.startswith("127") or "dev" in self.activemq_host or "activemq" in self.activemq_host:
+            aimed_at_dev = True
         # Prevent unintentional submission to non-development envs
         if not inteded_for_production and not aimed_at_dev:
             raise RuntimeError(
-                f"Trying to submit to a potentially non-development environment at `{self.credentials.host}`. "
+                f"Trying to submit to a potentially non-development environment at `{self.activemq_host}`. "
                 "You must declare AUTOREDUCTION_PRODUCTION in the environment "
                 "if you intend to submit to the production environment")
         if inteded_for_production and aimed_at_dev:
-            raise RuntimeError(f"Trying to submit to production environment but host is `{self.credentials.host}`. "
+            raise RuntimeError(f"Trying to submit to production environment but host is `{self.activemq_host}`. "
                                "Remove AUTOREDUCTION_PRODUCTION if that is unintentional.")
 
         if self._connection is None or not self._connection.is_connected():
             try:
-                host_port = [(self.credentials.host, int(self.credentials.port))]
+                host_port = [(self.activemq_host, int(self.activemq_port))]
                 connection = stomp.Connection(host_and_ports=host_port)
                 self._logger.info("Starting connection to %s", host_port)
-                connection.connect(username=self.credentials.username, passcode=self.credentials.password, wait=True)
+                connection.connect(username=self.activemq_user, passcode=os.getenv("ACTIVEMQ_PASSWORD"), wait=True)
             except ConnectFailedException as exp:
                 raise ConnectionException("ActiveMQ") from exp
             self._connection = connection
@@ -104,7 +104,7 @@ class QueueClient(AbstractClient):
 
         self._logger.info("Subscribing to data ready queue")
         self._connection.set_listener("queue_processor", listener)
-        self._connection.subscribe(destination=self.credentials.data_ready,
+        self._connection.subscribe(destination='/queue/DataReady',
                                    id=socket.getfqdn(),
                                    ack="client-individual",
                                    header={"activemq.prefetchSize": "1"})
