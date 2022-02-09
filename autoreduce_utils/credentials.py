@@ -9,11 +9,7 @@
 Settings for connecting to the test services that run locally
 """
 import os
-from dotenv import load_dotenv
 from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
-
-if not "AUTOREDUCTION_PRODUCTION" in os.environ:
-    load_dotenv()
 
 SETTINGS_FACTORY = ClientSettingsFactory()
 
