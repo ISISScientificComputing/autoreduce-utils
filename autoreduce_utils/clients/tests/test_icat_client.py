@@ -10,13 +10,14 @@ This performs a large amount of mocking of the actual ICAT functions.
 This is because we can not connect to icat for testing and it is not feasible
 to set up a local version for testing at this point.
 """
+import os
 import unittest
+from unittest import mock
 from unittest.mock import patch
 
 import icat
 
 from autoreduce_utils.clients.icat_client import ICATClient
-from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
 from autoreduce_utils.clients.connection_exception import ConnectionException
 
 
@@ -40,13 +41,13 @@ class TestICATClient(unittest.TestCase):
         """
 
         client = ICATClient()
-        self.assertEqual(client.credentials.username, 'YOUR-ICAT-USERNAME')
-        self.assertEqual(client.credentials.password, 'YOUR-PASSWORD')
-        self.assertEqual(client.credentials.host, 'YOUR-ICAT-WSDL-URL')
-        self.assertEqual(client.credentials.port, '')
-        self.assertEqual(client.credentials.auth, 'simple')
+        self.assertEqual(client.icat_user, 'YOUR-ICAT-USERNAME')
+        self.assertEqual(client.icat_host, 'YOUR-ICAT-WSDL-URL')
+        self.assertEqual(client.icat_port, '')
+        self.assertEqual(client.icat_auth, 'simple')
         mock_icat.assert_called_once_with('YOUR-ICAT-WSDL-URL')
 
+    @mock.patch.dict(os.environ, {"ICAT_USER": "YOUR-ICAT-USERNAME", "ICAT_PASSWORD": "YOUR-PASSWORD"})
     @patch('icat.Client.__init__', return_value=None)
     @patch('icat.Client.login')
     def test_valid_connection(self, mock_icat_login, mock_icat):
@@ -64,19 +65,22 @@ class TestICATClient(unittest.TestCase):
                                                     'password': 'YOUR-PASSWORD'
                                                 })
 
+    @mock.patch.dict(os.environ, {
+        "ICAT_USER": "user",
+        "ICAT_PASSWORD": "pass",
+        "ICAT_HOST": "www.fake-url.com",
+        "ICAT_PORT": "",
+        "ICAT_AUTH": "none"
+    },
+                     clear=True)
     def test_invalid_connection(self):
         """
         Test: A ValueError is raised
         When: connect is called while invalid credentials are held
         """
 
-        invalid_settings = ClientSettingsFactory().create('icat',
-                                                          username='user',
-                                                          password='pass',
-                                                          host=r'www.fake-url.com',
-                                                          port='',
-                                                          authentication_type='none')
-        self.assertRaises(ValueError, ICATClient, invalid_settings)
+        with self.assertRaises(ValueError):
+            ICATClient()
 
     @patch('icat.Client.__init__', return_value=None)
     @patch('icat.Client.logout')

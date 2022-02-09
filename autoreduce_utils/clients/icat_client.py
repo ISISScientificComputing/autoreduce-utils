@@ -8,35 +8,34 @@
 Module to perform ICAT client functionality
 Functions for login and query available from class
 """
-
+import os
 import icat
 
-from autoreduce_utils.credentials import ICAT_CREDENTIALS
-from autoreduce_utils.clients.abstract_client import AbstractClient
 from autoreduce_utils.clients.connection_exception import ConnectionException
 
 
-class ICATClient(AbstractClient):
+class ICATClient():
     """
     This class provides a layer of abstraction from Python ICAT.
     Only allowing logging in and querying.
     """
 
-    def __init__(self, credentials=None):
-        if not credentials:
-            credentials = ICAT_CREDENTIALS
-        super(ICATClient, self).__init__(credentials)  # pylint:disable=super-with-arguments
-        self.client = icat.Client(self.credentials.host)
+    def __init__(self):
+        self.icat_host = os.getenv("ICAT_HOST")
+        self.icat_user = os.getenv("ICAT_USER")
+        self.icat_auth = os.getenv("ICAT_AUTH")
+        self.icat_port = os.getenv("ICAT_PORT") or ''
+        self.client = icat.Client(self.icat_host)
 
     def connect(self):
         """
         Log in to ICAT using the details provided in the credentials.ini file
         """
 
-        self.client.login(auth=self.credentials.auth,
+        self.client.login(auth=self.icat_auth,
                           credentials={
-                              'username': self.credentials.username,
-                              'password': self.credentials.password
+                              'username': self.icat_user,
+                              'password': os.getenv("ICAT_PASSWORD")
                           })
 
     def _test_connection(self):
