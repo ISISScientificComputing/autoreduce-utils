@@ -27,7 +27,7 @@ class QueueClient():
     def __init__(self, consumer_name='queue_client'):
         self.activemq_host = os.getenv("ACTIVEMQ_HOST")
         self.activemq_port = os.getenv("ACTIVEMQ_PORT")
-        self.activemq_user = os.getenv("ACTIVEMQ_USER")
+        self.activemq_user = os.getenv("ACTIVEMQ_USERNAME")
         self._connection = None
         self._consumer_name = consumer_name
         self._logger = logging.getLogger(__package__)
