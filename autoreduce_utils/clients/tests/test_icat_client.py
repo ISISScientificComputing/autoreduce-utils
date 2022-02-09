@@ -18,7 +18,6 @@ from unittest.mock import patch
 import icat
 
 from autoreduce_utils.clients.icat_client import ICATClient
-from autoreduce_utils.clients.settings.client_settings_factory import ClientSettingsFactory
 from autoreduce_utils.clients.connection_exception import ConnectionException
 
 
