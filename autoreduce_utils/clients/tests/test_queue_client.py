@@ -46,7 +46,7 @@ class TestQueueClient(TestCase):
         self.assertTrue(client._connection.is_connected())
 
     @mock.patch.dict(os.environ, {
-        "ACTIVEMQ_USER": "not-user",
+        "ACTIVEMQ_USERNAME": "not-user",
         "ACTIVEMQ_PASSWORD": "not-pass",
         "ACTIVEMQ_HOST": "127.does.not.exist",
         "ACTIVEMQ_PORT": "1234"
