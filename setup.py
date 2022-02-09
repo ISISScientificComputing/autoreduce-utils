@@ -26,8 +26,8 @@ setup(
         'stomp.py==8.0.0',
     ],
     packages=find_packages(),
-    package_data={"autoreduce_utils": ["test_credentials.ini"]},
-    entry_points={"console_scripts": ["autoreduce-creds-migrate = autoreduce_utils.migrate_credentials:main"]},
+    package_data={},
+    entry_points={},
     long_description=long_description,
     long_description_content_type='text/markdown',
 )
