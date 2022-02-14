@@ -6,21 +6,25 @@
 # ############################################################################### #
 """Represents the messages passed between AMQ queues."""
 import json
+from typing import List, Union
 from pydantic import BaseModel
 
 from autoreduce_utils.message.validation import stages
 
 
 class Message(BaseModel):
-    # Create pydantic model for message
+    """
+    A class that represents a message to be sent via Kafka.
+    Messages can be serialised and deserialised to and from JSON.
+    """
     description: str = ""
     facility: str = "ISIS"
-    run_number: int = None
+    run_number: Union[int, List[int]] = None
     run_title: str = None
     instrument: str = None
     rb_number: int = None
     started_by: int = None
-    data: str = None
+    data: Union[str, List[str]] = None
     overwrite: bool = None
     run_version: str = None
     job_id: str = None
