@@ -4,11 +4,8 @@ import threading
 import time
 import logging
 import traceback
-
-from kafka import KafkaProducer
-from kafka.errors import NoBrokersAvailable
+from confluent_kafka import Producer
 from autoreduce_utils.clients.connection_exception import ConnectionException
-
 from autoreduce_utils.message.message import Message
 
 TRANSACTIONS_TOPIC = os.environ.get('KAFKA_TOPIC')  #"data_ready"
@@ -26,13 +23,15 @@ class Publisher(threading.Thread):
         self.logger.debug("Initializing the producer")
         self.producer = None
         self._stop_event = threading.Event()
+        self.delivered_msgs = 0
+
+        config = {'bootstrap.servers': KAFKA_BROKER_URL}
 
         while self.producer is None:
             try:
                 self.logger.debug("Getting the kafka producer")
-                self.producer = KafkaProducer(bootstrap_servers=KAFKA_BROKER_URL,
-                                              value_serializer=lambda v: json.dumps(v).encode('utf-8'))
-            except NoBrokersAvailable as err:
+                self.producer = Producer(config)
+            except Exception as err:
                 self.logger.error("Unable to find a broker: %s", (err))
                 time.sleep(1)
 
@@ -47,18 +46,30 @@ class Publisher(threading.Thread):
                 break
         self.producer.close()
 
+    def stop(self):
+        """ Stop the consumer """
+        self._stop_event.set()
+
+    def stopped(self):
+        """ Return whether the consumer has been stopped """
+        return self._stop_event.is_set()
+
     def send(self, message):
         """ Publish a message to the topic """
         self.logger.debug("Publishing: %s", (message))
         try:
-            if self.producer:
-                if isinstance(message, Message):
-                    message_json_dump = message.serialize()
-                else:
-                    message_json_dump = message
-                self.producer.send(TRANSACTIONS_TOPIC, message_json_dump)
+            record_value = message.json()
+            self.producer.produce(topic=TRANSACTIONS_TOPIC,
+                                  value=bytes(str(record_value), 'utf-8'),
+                                  on_delivery=self.on_delivery)
         except AttributeError:
             self.logger.error("Unable to send %s. The producer does not exist.", (message))
+
+    # This method is called every time a message is delivered to kafka
+    def on_delivery(self, error, message):
+        self.delivered_msgs += 1
+        self.logger.info(f"Delivered Message {self.delivered_msgs}")
+        self.logger.debug(f"{message.topic()}, {message.value()}")
 
 
 def setup_connection() -> Publisher:
