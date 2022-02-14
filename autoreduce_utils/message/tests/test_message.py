@@ -8,8 +8,6 @@
 import unittest
 import json
 
-import attr
-
 from autoreduce_utils.message.message import Message
 
 
@@ -80,6 +78,13 @@ class TestMessage(unittest.TestCase):
         }
         return populated_msg, populated_dict
 
+    @staticmethod
+    def _create_invalid_message():
+        """
+        Create an invalid message
+        """
+        return Message(run_number='12345', instrument='not inst', rb_number=-1, started_by="test", data=123)
+
     def test_init(self):
         """
         Test that all the expected member variables are created when the class
@@ -107,13 +112,20 @@ class TestMessage(unittest.TestCase):
         self.assertIsNone(empty_msg.reduction_data)
         self.assertFalse(empty_msg.flat_output)
 
+    def test_invalid_message_creation(self):
+        """
+        Test: validate_data_ready raises an exception
+        When: supplied with an invalid message
+        """
+        self.assertRaises(ValueError, self._create_invalid_message)
+
     def test_to_dict_populated(self):
         """
         Test that a dictionary with populated values in produced when
         `attr.asdict()` is called on a Message with populated values.
         """
         populated_msg, populated_dict = self._populated()
-        actual = populated_msg.to_dict()
+        actual = populated_msg.dict()
         self.assertEqual(actual, populated_dict)
 
     def test_serialize_populated(self):
@@ -156,7 +168,7 @@ class TestMessage(unittest.TestCase):
         _, populated_dict = self._populated()
         actual, _ = self._empty()
         actual.populate(source=populated_dict, overwrite=True)
-        self.assertEqual(attr.asdict(actual), populated_dict)
+        self.assertEqual(actual.dict(), populated_dict)
 
     def test_populate_from_dict_overwrite_false(self):
         """
@@ -182,7 +194,7 @@ class TestMessage(unittest.TestCase):
         serialized = populated_msg.serialize()
         actual, _ = self._empty()
         actual.populate(source=serialized, overwrite=True)
-        self.assertEqual(attr.asdict(actual), populated_dict)
+        self.assertEqual(actual.dict(), populated_dict)
 
     def test_populate_from_serialized_overwrite_false(self):
         """

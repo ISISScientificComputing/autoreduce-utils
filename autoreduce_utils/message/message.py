@@ -6,38 +6,37 @@
 # ############################################################################### #
 """Represents the messages passed between AMQ queues."""
 import json
-
-import attr
+from typing import List, Union
+from pydantic import BaseModel
 
 from autoreduce_utils.message.validation import stages
 
 
-@attr.s
-class Message:
+class Message(BaseModel):
     """
-    A class that represents an AMQ Message. Messages can be serialized and
-    deserialized for sending messages to and from AMQ.
+    A class that represents a message to be sent via Kafka.
+    Messages can be serialised and deserialised to and from JSON.
     """
-    description = attr.ib(default="")
-    facility = attr.ib(default="ISIS")
-    run_number = attr.ib(default=None)
-    run_title = attr.ib(default=None)
-    instrument = attr.ib(default=None)
-    rb_number = attr.ib(default=None)
-    started_by = attr.ib(default=None)
-    data = attr.ib(default=None)
-    overwrite = attr.ib(default=None)
-    run_version = attr.ib(default=None)
-    job_id = attr.ib(default=None)
-    reduction_script = attr.ib(default=None)
-    reduction_arguments = attr.ib(default={})
-    reduction_log = attr.ib(default="")  # Cannot be null in database
-    admin_log = attr.ib(default="")  # Cannot be null in database
-    message = attr.ib(default=None)
-    retry_in = attr.ib(default=None)
-    reduction_data = attr.ib(default=None)  # Required by reduction runner
-    software = attr.ib(default={})
-    flat_output = attr.ib(default=False)
+    description: str = ""
+    facility: str = "ISIS"
+    run_number: Union[int, List[int]] = None
+    run_title: str = None
+    instrument: str = None
+    rb_number: int = None
+    started_by: int = None
+    data: Union[str, List[str]] = None
+    overwrite: bool = None
+    run_version: str = None
+    job_id: str = None
+    reduction_script: str = None
+    reduction_arguments: dict = {}
+    reduction_log: str = ""  # Cannot be null in database
+    admin_log: str = ""  # Cannot be null in database
+    message: str = None
+    retry_in: int = None
+    reduction_data: str = None  # Required by reduction runner
+    software: dict = {}
+    flat_output: bool = False
 
     def serialize(self, indent=None, limit_reduction_script=False):
         """
@@ -51,7 +50,7 @@ class Message:
         Returns:
             JSON dump of a dictionary representing the member variables.
         """
-        data_dict = attr.asdict(self)
+        data_dict = self.dict()
         if limit_reduction_script:
             data_dict["reduction_script"] = data_dict["reduction_script"][:50]
 
@@ -90,7 +89,7 @@ class Message:
             except json.decoder.JSONDecodeError as exp:
                 raise ValueError(f"Unable to recognise serialized object {source}") from exp
 
-        self_dict = attr.asdict(self)
+        self_dict = self.dict()
         for key, value in source.items():
             if key in self_dict.keys():
                 self_value = self_dict[key]
@@ -114,4 +113,4 @@ class Message:
 
     def to_dict(self):
         """Return the message as a Python dictionary."""
-        return attr.asdict(self)
+        return self.dict()

@@ -26,11 +26,6 @@ class TestStages(TestCase):
             started_by=-1,
             data='test/file/path',
         )
-        self.invalid_message = Message(run_number='12345',
-                                       instrument='not inst',
-                                       rb_number=-1,
-                                       started_by='test',
-                                       data=123)
 
     def test_valid_validate_data_ready(self):
         """
@@ -40,13 +35,6 @@ class TestStages(TestCase):
         # This function raises on invalid message
         # if this test passes there was no raise
         stages.validate_data_ready(self.valid_message)
-
-    def test_invalid_validate_data_ready(self):
-        """
-        Test: validate_data_ready returns false
-        When: supplied with an invalid message
-        """
-        self.assertRaises(RuntimeError, stages.validate_data_ready, self.invalid_message)
 
     @mock.patch("autoreduce_utils.message.validation.stages.validators", spec=validators)
     def test_validate_data_ready_calls_validators(self, patched_validators):
