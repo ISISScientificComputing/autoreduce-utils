@@ -113,7 +113,7 @@ class TestMessage(unittest.TestCase):
         `attr.asdict()` is called on a Message with populated values.
         """
         populated_msg, populated_dict = self._populated()
-        actual = populated_msg.to_dict()
+        actual = populated_msg.dict()
         self.assertEqual(actual, populated_dict)
 
     def test_serialize_populated(self):
@@ -156,7 +156,7 @@ class TestMessage(unittest.TestCase):
         _, populated_dict = self._populated()
         actual, _ = self._empty()
         actual.populate(source=populated_dict, overwrite=True)
-        self.assertEqual(attr.asdict(actual), populated_dict)
+        self.assertEqual(actual.dict(), populated_dict)
 
     def test_populate_from_dict_overwrite_false(self):
         """
@@ -182,7 +182,7 @@ class TestMessage(unittest.TestCase):
         serialized = populated_msg.serialize()
         actual, _ = self._empty()
         actual.populate(source=serialized, overwrite=True)
-        self.assertEqual(attr.asdict(actual), populated_dict)
+        self.assertEqual(actual.dict(), populated_dict)
 
     def test_populate_from_serialized_overwrite_false(self):
         """
