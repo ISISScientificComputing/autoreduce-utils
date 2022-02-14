@@ -110,3 +110,7 @@ class Message(BaseModel):
         """
         if destination == '/queue/DataReady':
             stages.validate_data_ready(self)
+
+    def to_dict(self):
+        """Return the message as a Python dictionary."""
+        return self.dict()
