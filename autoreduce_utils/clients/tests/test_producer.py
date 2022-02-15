@@ -25,16 +25,17 @@ FAKE_KAFKA_URL = 'FAKE_KAFKA_URL'
 class TestConfluentKafkaProducer(TestCase):
 
     @mock.patch.dict(os.environ, {"KAFKA_BROKER_URL": FAKE_KAFKA_URL}, clear=True)
-    @mock.patch('confluent_kafka.Producer')
-    def setUp(self, mock_confluent_producer):
+    def setUp(self):
         """ Set up the test case. """
         super().setUp()
-        self.mock_confluent_producer = mock_confluent_producer
+        self.patcher = mock.patch('confluent_kafka.Producer')
+        self.mock_confluent_producer = self.patcher.start()
         self.prod = Publisher()
 
     def tearDown(self):
         """ Tear down the test case. """
         self.prod.producer.stop()
+        self.patcher.stop()
 
     def test_kafka_producer_init(self):
         """ Test if the producer is initialized correctly. """
