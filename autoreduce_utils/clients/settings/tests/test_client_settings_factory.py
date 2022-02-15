@@ -10,7 +10,7 @@ Tests for the ClientSettingsFactory
 import unittest
 
 from autoreduce_utils.clients.settings.client_settings_factory import (ClientSettingsFactory, MySQLSettings,
-                                                                       ICATSettings, ActiveMQSettings)
+                                                                       ICATSettings)
 
 
 # pylint:disable=missing-docstring
