@@ -1,12 +1,11 @@
-import json
 import os
 import threading
 import time
 import logging
 import traceback
-from confluent_kafka import Producer
+from confluent_kafka import Producer, KafkaException
+from confluent_kafka import Producer, KafkaException
 from autoreduce_utils.clients.connection_exception import ConnectionException
-from autoreduce_utils.message.message import Message
 
 TRANSACTIONS_TOPIC = os.environ.get('KAFKA_TOPIC')  #"data_ready"
 KAFKA_BROKER_URL = os.environ.get('KAFKA_BROKER_URL')
@@ -31,7 +30,7 @@ class Publisher(threading.Thread):
             try:
                 self.logger.debug("Getting the kafka producer")
                 self.producer = Producer(config)
-            except Exception as err:
+            except KafkaException as err:
                 self.logger.error("Unable to find a broker: %s", (err))
                 time.sleep(1)
 
@@ -65,11 +64,13 @@ class Publisher(threading.Thread):
         except AttributeError:
             self.logger.error("Unable to send %s. The producer does not exist.", (message))
 
-    # This method is called every time a message is delivered to kafka
     def on_delivery(self, error, message):
+        """
+        Callback called when a message is successfully delivered
+        """
         self.delivered_msgs += 1
-        self.logger.info(f"Delivered Message {self.delivered_msgs}")
-        self.logger.debug(f"{message.topic()}, {message.value()}")
+        self.logger.info("Delivered Message %s", self.delivered_msgs)
+        self.logger.debug("Error: %s. Topic: %s., Message: %s.", error, message.topic(), message.value())
 
 
 def setup_connection() -> Publisher:
@@ -79,8 +80,8 @@ def setup_connection() -> Publisher:
 
     publisher = Publisher()
 
-    t1 = threading.Thread(target=publisher.run)
-    t1.start()
+    producer_thread = threading.Thread(target=publisher.run)
+    producer_thread.start()
 
     return publisher
 
