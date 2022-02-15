@@ -36,10 +36,10 @@ class Publisher(object):
         """
 
         if err is not None:
-            log.exception('Message delivery failed: {}'.format(err))
+            log.exception('Message delivery failed: %s', (err))
             raise confluent_kafka.KafkaException(err)
         else:
-            log.debug('Message delivered to {} [{}]: {}'.format(msg.topic(), msg.partition(), msg.value()))
+            log.debug('Message delivered to %s [%s]: %s', (msg.topic(), msg.partition(), msg.value()))
 
     def publish(self, topic, messages, key=None, timeout=2):
         """
@@ -65,5 +65,5 @@ class Publisher(object):
             return self._producer.flush(timeout)
 
         except (BufferError, confluent_kafka.KafkaException, NotImplementedError):
-            log.exception('Error publishing to {} topic.'.format(topic))
+            log.exception('Error publishing to %s topic.', (topic))
             raise
