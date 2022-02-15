@@ -24,8 +24,8 @@ FAKE_KAFKA_URL = 'FAKE_KAFKA_URL'
 
 class TestConfluentKafkaProducer(TestCase):
 
-    @mock.patch('confluent_kafka.Producer')
     @mock.patch.dict(os.environ, {"KAFKA_BROKER_URL": "FAKE_KAFKA_URL"}, clear=True)
+    @mock.patch('confluent_kafka.Producer')
     def setUp(self, mock_confluent_producer):
         """ Set up the test case. """
         super().setUp()
@@ -41,7 +41,7 @@ class TestConfluentKafkaProducer(TestCase):
         expected_config = {'bootstrap.servers': FAKE_KAFKA_URL}
 
         self.mock_confluent_producer.assert_called_once_with(expected_config)
-        self.assertEqual(self.mock_confluent_producer.return_value, self.prod._producer)
+        self.assertEqual(self.mock_confluent_producer.return_value, self.prod.producer)
 
     def test_kafka_producer_publish(self):
         """ Test if the producer publishes correctly. """
@@ -53,8 +53,8 @@ class TestConfluentKafkaProducer(TestCase):
         self.prod.publish(topic, messages)
 
         produce_callback = producer.Publisher.delivery_report
-        self.prod._producer.produce.assert_called_once_with(topic, expected_message, None, callback=produce_callback)
-        self.prod._producer.flush.assert_called_once()
+        self.prod.producer.produce.assert_called_once_with(topic, expected_message, None, callback=produce_callback)
+        self.prod.producer.flush.assert_called_once()
 
     def test_kafka_producer_publish_one_message_with_key(self):
         """ Test if the producer publishes correctly with a key. """
@@ -66,27 +66,28 @@ class TestConfluentKafkaProducer(TestCase):
         self.prod.publish(topic, one_message, key)
 
         produce_callback = producer.Publisher.delivery_report
-        self.prod._producer.produce.assert_called_once_with(topic, expected_message, key, callback=produce_callback)
-        self.prod._producer.flush.assert_called_once()
+        self.prod.producer.produce.assert_called_once_with(topic, expected_message, key, callback=produce_callback)
+        self.prod.producer.flush.assert_called_once()
 
     def test_kafka_producer_publish_exception(self):
         """ Test if the producer raises an exception when publishing. """
         topic = FAKE_KAFKA_TOPIC
         test_message = Message()
         messages = [test_message]
-        self.prod._producer.produce.side_effect = \
+        self.prod.producer.produce.side_effect = \
             confluent_kafka.KafkaException
 
         self.assertRaises(confluent_kafka.KafkaException, self.prod.publish, topic, messages)
 
     @mock.patch('confluent_kafka.Message')
-    def test_delivery_report_exception(self):
+    def test_delivery_report_exception(self, mock_message):
         """ Test if the delivery report raises an exception when publishing. """
         self.assertRaises(confluent_kafka.KafkaException, self.prod.delivery_report, confluent_kafka.KafkaError,
                           confluent_kafka.Message)
 
     @mock.patch('confluent_kafka.Message')
-    def test_delivery_report(self):
+    def test_delivery_report(self, mock_message):
+        """ Test if the delivery report publishes correctly. """
         self.prod.delivery_report(None, confluent_kafka.Message)
 
     @mock.patch('confluent_kafka.Message')
