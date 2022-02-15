@@ -4,7 +4,6 @@ import time
 import logging
 import traceback
 from confluent_kafka import Producer, KafkaException
-from confluent_kafka import Producer, KafkaException
 from autoreduce_utils.clients.connection_exception import ConnectionException
 
 TRANSACTIONS_TOPIC = os.environ.get('KAFKA_TOPIC')  #"data_ready"
