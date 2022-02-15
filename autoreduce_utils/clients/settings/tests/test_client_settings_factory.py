@@ -34,20 +34,6 @@ class TestClientSettingsFactory(unittest.TestCase):
         self.assertEqual(actual.database, 'test-name')
         self.assertEqual(actual.get_full_connection_string(), 'mysql+mysqldb://test-user:test-pass@test-host/test-name')
 
-    def test_create_queue(self):
-        actual = self.factory.create('queue',
-                                     username='test-user',
-                                     password='test-pass',
-                                     host='test-host',
-                                     port='test-port',
-                                     data_ready='test-dr')
-        self.assertIsInstance(actual, ActiveMQSettings)
-        self.assertEqual(actual.username, 'test-user')
-        self.assertEqual(actual.password, 'test-pass')
-        self.assertEqual(actual.host, 'test-host')
-        self.assertEqual(actual.port, 'test-port')
-        self.assertEqual(actual.data_ready, 'test-dr')
-
     def test_create_icat(self):
         actual = self.factory.create('icat',
                                      username='test-user',
@@ -77,17 +63,6 @@ class TestClientSettingsFactory(unittest.TestCase):
                                'host',
                                'port',
                                database_invalid='invalid')
-
-    def test_invalid_queue_args(self):
-        self.assertRaisesRegex(ValueError,
-                               "queue_invalid is not a recognised key word argument.",
-                               self.factory.create,
-                               'queue',
-                               'user',
-                               'pass',
-                               'host',
-                               'port',
-                               queue_invalid='invalid')
 
     def test_invalid_icat_args(self):
         self.assertRaisesRegex(ValueError,

@@ -27,12 +27,6 @@ DB_CREDENTIALS = SETTINGS_FACTORY.create('database',
                                          port=os.getenv('DATABASE_PORT'),
                                          database_name=os.getenv('DATABASE_NAME'))
 
-ACTIVEMQ_CREDENTIALS = SETTINGS_FACTORY.create('queue',
-                                               username=os.getenv('ACTIVEMQ_USERNAME'),
-                                               password=os.getenv('ACTIVEMQ_PASSWORD'),
-                                               host=os.getenv('ACTIVEMQ_HOST'),
-                                               port=os.getenv('ACTIVEMQ_PORT'))
-
 CYCLE_SETTINGS = SETTINGS_FACTORY.create('cycle',
                                          username=os.getenv('CYCLE_USER'),
                                          password=os.getenv('CYCLE_PASSWORD'),
