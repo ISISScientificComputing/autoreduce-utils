@@ -15,7 +15,7 @@
 import os
 from unittest import TestCase, mock
 import confluent_kafka
-from autoreduce_utils.clients import producer
+from autoreduce_utils.clients.producer import Publisher
 from autoreduce_utils.message.message import Message
 
 FAKE_KAFKA_TOPIC = 'topic'
@@ -24,17 +24,17 @@ FAKE_KAFKA_URL = 'FAKE_KAFKA_URL'
 
 class TestConfluentKafkaProducer(TestCase):
 
-    @mock.patch.dict(os.environ, {"KAFKA_BROKER_URL": "FAKE_KAFKA_URL"}, clear=True)
+    @mock.patch.dict(os.environ, {"KAFKA_BROKER_URL": FAKE_KAFKA_URL}, clear=True)
     @mock.patch('confluent_kafka.Producer')
     def setUp(self, mock_confluent_producer):
         """ Set up the test case. """
         super().setUp()
         self.mock_confluent_producer = mock_confluent_producer
-        self.prod = producer.Publisher()
+        self.prod = Publisher()
 
     def tearDown(self):
         """ Tear down the test case. """
-        super().tearDown()
+        self.prod.producer.stop()
 
     def test_kafka_producer_init(self):
         """ Test if the producer is initialized correctly. """
@@ -52,7 +52,7 @@ class TestConfluentKafkaProducer(TestCase):
 
         self.prod.publish(topic, messages)
 
-        produce_callback = producer.Publisher.delivery_report
+        produce_callback = Publisher.delivery_report
         self.prod.producer.produce.assert_called_once_with(topic, expected_message, None, callback=produce_callback)
         self.prod.producer.flush.assert_called_once()
 
@@ -65,7 +65,7 @@ class TestConfluentKafkaProducer(TestCase):
 
         self.prod.publish(topic, one_message, key)
 
-        produce_callback = producer.Publisher.delivery_report
+        produce_callback = Publisher.delivery_report
         self.prod.producer.produce.assert_called_once_with(topic, expected_message, key, callback=produce_callback)
         self.prod.producer.flush.assert_called_once()
 
@@ -79,21 +79,27 @@ class TestConfluentKafkaProducer(TestCase):
 
         self.assertRaises(confluent_kafka.KafkaException, self.prod.publish, topic, messages)
 
+    @mock.patch('autoreduce_utils.clients.producer.log')
     @mock.patch('confluent_kafka.Message')
-    def test_delivery_report_exception(self, mock_message):
-        """ Test if the delivery report raises an exception when publishing. """
+    def test_delivery_report_exception(self, mock_message, mock_logger):
+        """ Test if the delivery report raises an exception. """
         self.assertRaises(confluent_kafka.KafkaException, self.prod.delivery_report, confluent_kafka.KafkaError,
-                          confluent_kafka.Message)
+                          mock_message)
+        mock_logger.exception.assert_called_once()
 
+    @mock.patch('autoreduce_utils.clients.producer.log')
     @mock.patch('confluent_kafka.Message')
-    def test_delivery_report(self, mock_message):
+    def test_delivery_report(self, mock_message, mock_logger):
         """ Test if the delivery report publishes correctly. """
-        self.prod.delivery_report(None, confluent_kafka.Message)
+        self.prod.delivery_report(None, mock_message)
+        mock_logger.debug.assert_called_once()
 
+    @mock.patch('autoreduce_utils.clients.producer.log')
     @mock.patch('confluent_kafka.Message')
-    def test_delivery_report_with_unicode(self, mock_message):
-        """ Test if the delivery report is successful with unicode. """
+    def test_delivery_report_with_unicode(self, mock_message, mock_logger):
+        """ Test if the delivery report publishes correctly with unicode. """
         mock_message.topic.return_value = 'test_topic'
         mock_message.partition.return_value = '1'
         mock_message.value.return_value = 'gęś'
         self.prod.delivery_report(None, mock_message)
+        mock_logger.debug.assert_called_once_with('Message delivered to %s [%s]: %s', 'test_topic', '1', 'gęś')

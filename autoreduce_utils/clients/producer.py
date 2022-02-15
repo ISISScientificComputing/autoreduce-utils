@@ -6,7 +6,7 @@ import confluent_kafka
 log = logging.getLogger(__name__)
 
 
-class Publisher(object):
+class Publisher():
     """Wrapper around asynchronous Kafka Producer"""
 
     def __init__(self):
@@ -30,11 +30,11 @@ class Publisher(object):
         :raises confluent_kafka.KafkaException
         """
 
-        if err is not None:
+        if err is None:
+            log.debug('Message delivered to %s [%s]: %s', msg.topic(), msg.partition(), msg.value())
+        else:
             log.exception('Message delivery failed: %s', (err))
             raise confluent_kafka.KafkaException(err)
-        else:
-            log.debug('Message delivered to %s [%s]: %s', (msg.topic(), msg.partition(), msg.value()))
 
     def publish(self, topic, messages, key=None, timeout=2):
         """
@@ -52,8 +52,8 @@ class Publisher(object):
             messages = [messages]
 
         try:
-            for m in messages:
-                record_value = m.json()
+            for message in messages:
+                record_value = message.json()
                 self.producer.produce(topic, record_value, key, callback=Publisher.delivery_report)
                 self.producer.poll(0)
 
