@@ -249,11 +249,11 @@ class TestMessage(unittest.TestCase):
             },
         )
         try:
-            self.assertIsNone(message.validate('/queue/DataReady'))
+            self.assertIsNone(message.validate('data_ready'))
         except RuntimeError:
             self.fail()
 
     def test_validate_data_ready_invalid(self):
         """Test an exception is raised when an invalid Message is validated."""
         message = Message(instrument='Not an inst')
-        self.assertRaises(RuntimeError, message.validate, '/queue/DataReady')
+        self.assertRaises(RuntimeError, message.validate, 'data_ready')
