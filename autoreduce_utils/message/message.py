@@ -6,7 +6,7 @@
 # ############################################################################### #
 """Represents the messages passed between AMQ queues."""
 import json
-from typing import List, Union
+from typing import List, Optional, Union
 from pydantic import BaseModel
 
 from autoreduce_utils.message.validation import stages
@@ -19,22 +19,22 @@ class Message(BaseModel):
     """
     description: str = ""
     facility: str = "ISIS"
-    run_number: Union[int, List[int]] = None
-    run_title: str = None
-    instrument: str = None
-    rb_number: int = None
-    started_by: int = None
-    data: Union[str, List[str]] = None
-    overwrite: bool = None
-    run_version: str = None
-    job_id: str = None
-    reduction_script: str = None
-    reduction_arguments: dict = {}
+    run_number: Union[int, List[int], None] = None
+    run_title: Optional[str] = None
+    instrument: Optional[str] = None
+    rb_number: Union[int, str, None] = None
+    started_by: Optional[int] = None
+    data: Union[str, List[str], None] = None
+    overwrite: Optional[bool] = None
+    run_version: Optional[str] = None
+    job_id: Optional[int] = None
+    reduction_script: Optional[str] = None
+    reduction_arguments: Optional[dict] = {}
     reduction_log: str = ""  # Cannot be null in database
     admin_log: str = ""  # Cannot be null in database
-    message: str = None
-    retry_in: int = None
-    reduction_data: str = None  # Required by reduction runner
+    message: Optional[str] = None
+    retry_in: Optional[int] = None
+    reduction_data: Optional[str] = None  # Required by reduction runner
     software: dict = {}
     flat_output: bool = False
 
