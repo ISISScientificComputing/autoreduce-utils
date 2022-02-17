@@ -108,7 +108,7 @@ class Message(BaseModel):
         Args:
             destination: The name of the queue to send the data to.
         """
-        if destination == 'data_ready':
+        if destination == '/queue/DataReady':
             stages.validate_data_ready(self)
 
     def to_dict(self):

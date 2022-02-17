@@ -31,6 +31,8 @@ logging.basicConfig(format="[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(
                     level=LOG_LEVEL,
                     handlers=[rotating_file_handler, stream_handler])
 
+logging.getLogger('stomp.py').setLevel("ERROR")
+
 #####################################################################################################
 
 PROJECT_DEV_ROOT = os.path.join(AUTOREDUCE_HOME_ROOT, "dev")
