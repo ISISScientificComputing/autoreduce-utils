@@ -20,7 +20,7 @@ class Message(BaseModel):
     description: str = ""
     facility: str = "ISIS"
     run_number: Union[int, List[int], None] = None
-    run_title: Optional[str] = None
+    run_title: Union[str, List[str], None] = None
     instrument: Optional[str] = None
     rb_number: Union[int, str, None] = None
     started_by: Optional[int] = None
