@@ -14,7 +14,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='autoreduce_utils',
-    version='22.0.0.dev16',
+    version='22.0.0.dev19',
     description='ISIS Autoreduce',
     author='ISIS Autoreduction Team',
     url='https://github.com/autoreduction/autoreduce-utils/',
