@@ -1,7 +1,8 @@
 import logging
-import os
 
 import confluent_kafka
+
+from autoreduce_utils.clients.kafka_utils import kafka_config_from_env
 
 log = logging.getLogger(__name__)
 
@@ -11,9 +12,7 @@ class Publisher():
 
     def __init__(self):
         super().__init__()
-        config = {
-            'bootstrap.servers': os.environ.get('KAFKA_BROKER_URL'),
-        }
+        config = kafka_config_from_env()
         self.producer = confluent_kafka.Producer(config)
 
     @staticmethod
