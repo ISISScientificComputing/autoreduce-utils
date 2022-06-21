@@ -31,6 +31,10 @@ def kafka_config_from_env():
     """ Generate Confluent Kafka configuration from environment variables. """
     config = {}
     for key, (env_key, type_cast) in confluent_config.items():
-        if env_key in os.environ:
-            config[key] = type_cast(os.environ[env_key])
+        value = os.getenv(env_key, None)
+        if value:
+            if type_cast is bool:
+                config[key] = value.title() != "False"
+            else:
+                config[key] = type_cast(value)  # pylint: disable=not-callable
     return config
