@@ -19,7 +19,7 @@ setup(
     author='ISIS Autoreduction Team',
     url='https://github.com/autoreduction/autoreduce-utils/',
     install_requires=[
-        'pydantic==1.9.0', 'gitpython<=3.1.26', 'python-icat==0.21.0', 'suds-community==1.1.1', 'confluent-kafka==1.9.0'
+        'pydantic==1.9.0', 'gitpython<3.1.28', 'python-icat==0.21.0', 'suds-community==1.1.1', 'confluent-kafka==1.9.0'
     ],
     packages=find_packages(),
     package_data={},
