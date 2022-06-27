@@ -14,12 +14,12 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='autoreduce_utils',
-    version='22.0.0.dev21',
+    version='22.0.0.dev22',
     description='ISIS Autoreduce',
     author='ISIS Autoreduction Team',
     url='https://github.com/autoreduction/autoreduce-utils/',
     install_requires=[
-        'pydantic==1.9.0', 'gitpython<=3.1.26', 'python-icat==0.20.1', 'suds-py3==1.4.5.0', 'confluent-kafka==1.9.0'
+        'pydantic==1.9.0', 'gitpython<=3.1.26', 'python-icat==0.21.0', 'suds-community==1.1.1', 'confluent-kafka==1.9.0'
     ],
     packages=find_packages(),
     package_data={},
