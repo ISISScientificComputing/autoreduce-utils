@@ -16,18 +16,6 @@ dependencies = [
     'confluent-kafka==1.9.0',
 ]
 
-[project.optional-dependencies]
-testing = [
-    "coveralls==3.3.1",
-    "parameterized==0.8.1",
-    "pylint==2.14.4",
-    "pylint-django==2.5.3",
-    "pytest==7.1.2",
-    "pytest-cov==3.0.0",
-    "vulture==2.5",
-    "yapf==0.32.0",
-]
-
 [tool.pytest.ini_options]
 norecursedirs = [".*", "dist", "CVS", "_darcs", "{arch}", "*.egg"]
 
@@ -51,3 +39,5 @@ disable = [
 ]
 [tool.pylint.FORMAT]
 max-line-length = 120
+[tool.pylint.DESIGN]
+max-args = 8

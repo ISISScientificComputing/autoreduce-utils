@@ -68,7 +68,7 @@ jobs:
       - name: Pip install
         run: |
           pip install --upgrade pip
-          pip install -e .[extra]
+          pip install -e .
 
 
   Inspection:
