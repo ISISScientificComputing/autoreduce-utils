@@ -13,7 +13,6 @@ from unittest.mock import patch
 from autoreduce_utils.clients.tools.isisicat_prefix_mapping import get_icat_instrument_prefix
 
 
-# pylint:disable=no-self-use
 class MockInstrumentQueryResult:
     """
     Mocks result of isisicat_prefix_mapping.client.execute_query for an instrument
