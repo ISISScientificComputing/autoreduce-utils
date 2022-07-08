@@ -96,10 +96,6 @@ jobs:
         with:
           repository: "autoreduction/autoreduce-workspace"
 
-      - name: Pylint tests
-        run: |
-          pylint autoreduce_utils
-
       - uses: autoreduction/autoreduce-actions/code_inspection@main
         with:
           package_name: autoreduce_utils
