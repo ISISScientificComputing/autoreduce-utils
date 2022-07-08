@@ -27,7 +27,6 @@ based_on_style = "pep8"
 ignore_patterns = ["setup.py", "**/migrations", "venv/", "venv3/"]
 
 [tool.pylint.MAIN]
-load-plugins = ["pylint_django"]
 extension-pkg-whitelist = ["pydantic"]
 disable = [
     "R0904", # too-many-public-methods
