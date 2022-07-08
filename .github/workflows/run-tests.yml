@@ -1,5 +1,5 @@
 name: Tests
-on: [ push ]
+on: [push]
 
 jobs:
   pytest:
@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.8']
+        python-version: ["3.8"]
 
     steps:
       - uses: actions/checkout@v2
@@ -41,7 +41,7 @@ jobs:
 
       - name: Build package for publishing
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: python3 -m pip install --upgrade build && python -m build
+        run: python3 -m pip install --upgrade build wheel && python -m build
 
       - name: Publish distribution 📦 to PyPI
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -55,7 +55,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.8']
+        python-version: ["3.8"]
 
     steps:
       - uses: actions/checkout@v2
@@ -70,14 +70,13 @@ jobs:
           pip install --upgrade pip
           pip install -e .
 
-
   Inspection:
     name: Code Inspection
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.8']
+        python-version: ["3.8"]
 
     steps:
       - uses: actions/checkout@v2
