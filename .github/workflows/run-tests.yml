@@ -103,9 +103,9 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ job.container.image }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
-            ${{ job.container.image }}-pip-
+            ${{ runner.os }}-pip-
 
       - uses: autoreduction/autoreduce-actions/build@main
         with:
