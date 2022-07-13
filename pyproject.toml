@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "autoreduce_utils"
 version = "22.0.0.dev22"
 description = "Various utils for the Autoreduction service"
+readme = "README.md"
 license = { text = "GNU General Public License" }
 classifiers = ["Framework :: Django", "Programming Language :: Python :: 3"]
 dependencies = [
