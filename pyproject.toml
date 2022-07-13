@@ -40,6 +40,7 @@ disable = [
     "C0114", # missing-module-docstring
     "C0115", # missing-class-docstring
 ]
+
 [tool.pylint.FORMAT]
 max-line-length = 120
 
