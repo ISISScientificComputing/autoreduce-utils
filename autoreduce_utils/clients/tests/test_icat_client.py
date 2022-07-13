@@ -27,7 +27,7 @@ def raise_icat_session_error():
     raise icat.ICATSessionError('ICAT session error raised from mock')
 
 
-# pylint:disable=missing-docstring,no-self-use
+# pylint:disable=missing-docstring
 class TestICATClient(unittest.TestCase):
 
     @patch('icat.Client.__init__', return_value=None)
