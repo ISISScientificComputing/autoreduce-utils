@@ -21,6 +21,9 @@ dependencies = [
 "Repository" = "https://github.com/autoreduction/utils"
 "Wiki" = "https://github.com/autoreduction/queue-processor/wiki"
 
+[tool.setuptools]
+packages = ["autoreduce_utils"]
+
 [tool.pytest.ini_options]
 norecursedirs = [".*", "dist", "CVS", "_darcs", "{arch}", "*.egg"]
 
