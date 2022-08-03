@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autoreduce_utils"
-version = "22.0.0.dev22"
+version = "22.0.0.dev23"
 description = "Various utils for the Autoreduction service"
 readme = "README.md"
 license = { text = "GNU General Public License" }
