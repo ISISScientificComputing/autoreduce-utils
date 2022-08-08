@@ -17,7 +17,6 @@ FACILITY = 'ISIS'
 
 AUTOREDUCE_HOME_ROOT = os.environ.get("AUTOREDUCTION_USERDIR", os.path.expanduser("~/.autoreduce"))
 
-############################################## Logging ##############################################
 os.makedirs(os.path.join(AUTOREDUCE_HOME_ROOT, "logs"), exist_ok=True)
 
 LOG_LEVEL = os.environ.get("LOGLEVEL", "INFO").upper()
