@@ -17,6 +17,9 @@ dependencies = [
     'confluent-kafka==1.9.0',
 ]
 
+[project.optional-dependencies]
+dev = ["pre-commit==2.20.0"]
+
 [project.urls]
 "Repository" = "https://github.com/autoreduction/utils"
 "Wiki" = "https://github.com/autoreduction/queue-processor/wiki"
