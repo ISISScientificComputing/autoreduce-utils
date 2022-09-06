@@ -17,7 +17,7 @@ class ClientSettingsFactory:
     """
 
     ignore_kwargs = ['username', 'password', 'host', 'port']
-    valid_types = ['database', 'icat', 'queue', 'sftp', 'cycle']
+    valid_types = ['database', 'icat', 'sftp', 'cycle']
 
     def create(self, settings_type, username, password, host, port, **kwargs):
         """
@@ -47,8 +47,6 @@ class ClientSettingsFactory:
             settings = self._create_database(**kwargs)
         elif settings_type.lower() == 'icat':
             settings = self._create_icat(**kwargs)
-        elif settings_type.lower() == 'queue':
-            settings = self._create_queue(**kwargs)
         elif settings_type.lower() == 'sftp':
             settings = self._create_sftp(**kwargs)
         elif settings_type.lower() == 'cycle':
@@ -62,14 +60,6 @@ class ClientSettingsFactory:
         database_kwargs = ['database_name']
         self._test_kwargs(database_kwargs, kwargs)
         return MySQLSettings(**kwargs)
-
-    def _create_queue(self, **kwargs):
-        """
-        :return: Queue compatible settings object
-        """
-        queue_kwargs = ['data_ready']
-        self._test_kwargs(queue_kwargs, kwargs)
-        return ActiveMQSettings(**kwargs)
 
     def _create_icat(self, **kwargs):
         """
@@ -129,21 +119,6 @@ class MySQLSettings(ClientSettings):
     def get_full_connection_string(self):
         """ :return: string for connecting directly to mysql service with user + pass """
         return f'mysql+mysqldb://{self.username}:{self.password}@{self.host}/{self.database}'
-
-
-class ActiveMQSettings(ClientSettings):
-    """
-    ActiveMq settings to be used as a Queue settings object
-    """
-    data_ready = None
-    all_subscriptions = None
-
-    def __init__(self, data_ready='/queue/DataReady', **kwargs):
-        # TODO explicitly state args
-        super(ActiveMQSettings, self).__init__(**kwargs)  # pylint:disable=super-with-arguments
-
-        self.data_ready = data_ready
-        self.all_subscriptions = [data_ready]
 
 
 class SFTPSettings(ClientSettings):
