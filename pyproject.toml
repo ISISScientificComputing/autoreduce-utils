@@ -13,7 +13,7 @@ dependencies = [
     'pydantic==1.9.0',
     'gitpython==3.1.27',
     'python-icat==0.21.0',
-    'suds-community==1.1.1',
+    'suds-community==1.1.2',
     'confluent-kafka==1.9.0',
 ]
 
