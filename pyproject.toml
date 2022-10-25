@@ -10,7 +10,7 @@ readme = "README.md"
 license = { text = "GNU General Public License" }
 classifiers = ["Framework :: Django", "Programming Language :: Python :: 3"]
 dependencies = [
-    'pydantic==1.9.0',
+    'pydantic==1.10.2',
     'gitpython==3.1.27',
     'python-icat==0.21.0',
     'suds-community==1.1.1',
